@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Post;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,11 +16,37 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PostRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Post::class);
+        $this->entityManager = $entityManager;
     }
 
+    /**
+     * @param Post $post
+     * @param User $user
+     */
+    public function setSave(Post $post, User $user)
+    {
+        $post->setUser($user);
+        $this->entityManager->persist($post);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @param Post $post
+     */
+    public function setDelete(Post $post)
+    {
+        $post->setStatus(3);
+        $post->setDeletedAt(new \DateTimeImmutable());
+        $this->entityManager->flush();
+    }
     // /**
     //  * @return Post[] Returns an array of Post objects
     //  */

@@ -37,6 +37,11 @@
                 {{ form_widget(form.image) }}
             </div>
         </div>
+
     {{ form_end(form) }}
+
+    {% if post.image %}
+        <img style="height: 200px" src="{{ asset('uploads/') }}{{ post.image }}"/>
+    {% endif %}
 
 {% endblock %}

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Post;
 use App\Form\EditPostFormType;
 use App\Repository\PostRepository;
+use App\Utils\FileSaver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,22 +32,24 @@ class PostController extends AbstractController
      * @Route("/edit/{id}", name="edit")
      * @Route("/add", name="add")
      */
-    public function edit(Request $request, Post $post = null): Response
+    public function edit(Request $request, PostRepository $postRepository, FileSaver $fileSaver, Post $post = null): Response
     {
         if (!$post){
             $post = New Post();
-            $post->setUser($this->getUser());
         }
+
         $form = $this->createForm(EditPostFormType::class, $post);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
-            $entityManager = $this->getDoctrine()->getManager();
+            $uploadedFile = $form->get('image')->getData();
+            $image = $fileSaver->save($uploadedFile);
+            $post->setImage($image);
 
-            $entityManager->persist($post);
-            $entityManager->flush();
+            $user = $this->getUser();
+            $postRepository->setSave($post, $user);
 
-            return $this->redirectToRoute('post_edit', ['id' => $post->getId()]);
+            return $this->redirectToRoute('main_post_edit', ['id' => $post->getId()]);
         }
 
         return $this->render('main/post/edit.html.twig', [
@@ -58,12 +61,9 @@ class PostController extends AbstractController
     /**
      * @Route("/delete{id}", name="delete")
      */
-    public function delete(Post $post): Response
+    public function delete(Post $post, PostRepository $postRepository): Response
     {
-        $post->setStatus(2);
-        $post->setDeletedAt(new \DateTimeImmutable());
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->flush();
+        $postRepository->setDelete($post);
 
         return $this->redirectToRoute('main_post_list');
     }

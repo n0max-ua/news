@@ -25,6 +25,7 @@ class EditPostFormType extends AbstractType
             ->add('category')
             ->add('image', FileType::class, [
                 'label' => 'Choose new image',
+                'data_class' => null,
                 'required' => false
             ])
             ->add('save', SubmitType::class)
