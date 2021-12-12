@@ -1,0 +1,42 @@
+{% extends 'main/base.html.twig' %}
+
+{% block title %}Edit Post{% endblock %}
+
+{% block body %}
+    {% if post.id %}
+        <h1 class="mb-3">Edit Post</h1>
+    {% else %}
+        <h1 class="mb-3">Add Post</h1>
+    {% endif %}
+
+    {{ form_start(form) }}
+        <div class="row mb-2 p-3">
+            {{ form_label(form.title) }}
+            <div class="col-lg-6">
+                {{ form_widget(form.title) }}
+            </div>
+        </div>
+
+        <div class="row mb-2 p-3">
+        {{ form_label(form.content) }}
+            <div class="col-lg-6">
+                {{ form_widget(form.content) }}
+            </div>
+        </div>
+
+        <div class="row mb-2 p-3">
+            {{ form_label(form.category) }}
+            <div class="col-lg-6">
+                {{ form_widget(form.category) }}
+            </div>
+        </div>
+
+        <div class="row mb-2 p-3">
+            {{ form_label(form.image) }}
+            <div class="col-lg-6">
+                {{ form_widget(form.image) }}
+            </div>
+        </div>
+    {{ form_end(form) }}
+
+{% endblock %}

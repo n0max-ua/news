@@ -34,6 +34,7 @@ class Post
      */
     private $image;
 
+    //status: 1-created, 2-published, 3-deleted
     /**
      * @ORM\Column(type="smallint")
      */
@@ -56,7 +57,7 @@ class Post
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
 
@@ -74,6 +75,9 @@ class Post
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable();
+        $this->status = 1;
+
     }
 
     public function getId(): ?int

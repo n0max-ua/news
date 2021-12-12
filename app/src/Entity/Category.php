@@ -22,7 +22,7 @@ class Category
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $фтname;
+    private $name;
 
     /**
      * @ORM\OneToMany(targetEntity=Post::class, mappedBy="category")
@@ -39,14 +39,14 @@ class Category
         return $this->id;
     }
 
-    public function getфтname(): ?string
+    public function getName(): ?string
     {
-        return $this->фтname;
+        return $this->name;
     }
 
-    public function setфтname(string $фтname): self
+    public function setName(string $name): self
     {
-        $this->фтname = $фтname;
+        $this->name = $name;
 
         return $this;
     }
@@ -79,5 +79,10 @@ class Category
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }
