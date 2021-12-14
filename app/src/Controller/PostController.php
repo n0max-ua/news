@@ -43,8 +43,10 @@ class PostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()){
             $uploadedFile = $form->get('image')->getData();
-            $image = $fileSaver->save($uploadedFile);
-            $post->setImage($image);
+            if ($uploadedFile){
+                $image = $fileSaver->save($uploadedFile);
+                $post->setImage($image);
+            }
 
             $user = $this->getUser();
             $postRepository->setSave($post, $user);

@@ -41,7 +41,7 @@
     {{ form_end(form) }}
 
     {% if post.image %}
-        <img style="height: 200px" src="{{ asset('uploads/') }}{{ post.image }}"/>
+        <img class="my-3" style="max-height: 200px" src="{{ asset('uploads/') }}{{ post.image }}"/>
     {% endif %}
 
 {% endblock %}
