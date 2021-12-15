@@ -39,7 +39,7 @@ class MainController extends AbstractController
      */
     public function item(Post $post): Response
     {
-        return $this->render('main/default/news_item.html.twig',[
+        return $this->render('main/default/news-item.html.twig',[
             'post' => $post
         ]);
     }

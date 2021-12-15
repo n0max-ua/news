@@ -4,22 +4,21 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-md-2 bg-dark">
+        <div class="col-md-2">
             {# side#}
         </div>
         <div class="col-md-8">
             <h2 class="mb-3">{{ post.title }}</h2>
-            <p>{{ post.createdAt | date('y.m.d H:i') }}</p>
+            <p>{{ post.createdAt | date('y.m.d H:i') }} <small>by {{ post.user.fullName }}</small></p>
             {% if post.image %}
                 <div class="row my-3 d-flex justify-content-center">
-                    <img class="" style="max-height: 400px" src="{{ asset('uploads/') }}{{ post.image }}"/>
+                    <img style="max-height: 400px" src="{{ asset('uploads/') }}{{ post.image }}"/>
                 </div>
             {% endif %}
-            <p class="fs-5 p-3 text-justify">{{ post.content }}</p>
+            <p class="fs-5 p-1 text-justify">{{ post.content }}</p>
         </div>
-        <div class="col-md-2 bg-dark">
+        <div class="col-md-2">
             {# side #}
         </div>
     </div>
-
 {% endblock %}
