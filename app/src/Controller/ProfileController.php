@@ -2,9 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\EditProfileFormType;
+use App\Repository\UserRepository;
+use App\Utils\FileSaver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/profile", name="main_profile_")
@@ -23,9 +30,28 @@ class ProfileController extends AbstractController
     /**
      * @Route("/edit", name="edit")
      */
-    public function edit(): Response
+    public function edit(Request $request, FileSaver $fileSaver, UserRepository $userRepository): Response
     {
+        $email= $this->getUser()->getUserIdentifier();
+        $user = $userRepository->findOneBy(['email' => $email]);
+        $form = $this->createForm(EditProfileFormType::class, $user);
+        $form->handleRequest($request);
 
-        return $this->render('main/profile/edit.html.twig');
+        if ($form->isSubmitted() && $form->isValid()){
+            $uploadedFile = $form->get('photo')->getData();
+
+            if ($uploadedFile){
+                $photo = $fileSaver->save($uploadedFile);
+                $user->setPhoto($photo);
+            }
+
+            $userRepository->save($user);
+
+            return $this->redirectToRoute('main_profile_index');
+        }
+
+        return $this->render('main/profile/edit.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 }

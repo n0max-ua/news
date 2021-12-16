@@ -23,18 +23,13 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('main_profile_index') }}">
                         {% if app.user.photo %}
-                            <img style="height: 30px;width: 30px; border-radius: 50%;" src="{{ asset('uploads/') }}{{ app.user.photo }}"/>
-                            {% else %}
-                                <img style="max-height: 30px; border-radius: 50%;" src="{{ asset('build/images/no-img.jpg') }}"/>
+                            <img style="height: 25px; width: 25px; border-radius: 50%;" src="{{ asset('uploads/') }}{{ app.user.photo }}"/>
+                        {% else %}
+                            <img style="height: 25px; width: 25px; border-radius: 50%;" src="{{ asset('build/images/no-img.jpg') }}"/>
                         {% endif %}
+                        <strong class="ml-2">{{ app.user.email }}</strong>
                     </a>
                 </li>
-{#                <li class="nav-item">#}
-{#                    <i class="nav-link mt-1 fal fa-grip-lines-vertical"></i>#}
-{#                </li>#}
-{#               <li class="nav-item">#}
-{#                  <a class="nav-link" href="{{ path('main_logout') }}"><strong>Log Out</strong></a>#}
-{#               </li>#}
             {% else %}
                <li class="nav-item">
                   <a class="nav-link" href="{{ path('main_registration') }}">Registration</a>
