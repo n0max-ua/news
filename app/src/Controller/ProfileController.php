@@ -34,6 +34,7 @@ class ProfileController extends AbstractController
     {
         $email= $this->getUser()->getUserIdentifier();
         $user = $userRepository->findOneBy(['email' => $email]);
+
         $form = $this->createForm(EditProfileFormType::class, $user);
         $form->handleRequest($request);
 
