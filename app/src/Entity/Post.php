@@ -121,7 +121,20 @@ class Post
 
     public function setStatus(int $status): self
     {
+        if ($status <= 0 || $status > 3){
+            $status = 1;
+        }
+
         $this->status = $status;
+
+        if ($status == 2){
+            $this->deleted_at = null;
+            $this->posted_at = new \DateTimeImmutable();
+        }
+
+        if ($status == 3){
+            $this->deleted_at = new \DateTimeImmutable();
+        }
 
         return $this;
     }

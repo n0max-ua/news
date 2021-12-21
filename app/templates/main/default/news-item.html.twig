@@ -9,7 +9,7 @@
         </div>
         <div class="col-md-8 py-5">
             <h2 class="mb-3">{{ post.title }}</h2>
-            <p>{{ post.createdAt | date('y.m.d H:i') }} <small>by {{ post.user.fullName }}</small></p>
+            <p>{{ post.createdAt | date('y.m.d H:i') }} <small>by {{ post.user.email }}</small></p>
             {% if post.image %}
                 <div class="row my-3 d-flex justify-content-center">
                     <img style="max-height: 400px" src="{{ asset('uploads/') }}{{ post.image }}"/>

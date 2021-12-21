@@ -4,7 +4,7 @@ namespace App\Utils;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -34,9 +34,9 @@ class FileSaver
 
     /**
      * @param UploadedFile $uploadedFile
-     * @return string
+     * @return string|null
      */
-    public function save(UploadedFile $uploadedFile): string
+    public function save(UploadedFile $uploadedFile): ?string
     {
         $fileName = uniqid() .'.'. $uploadedFile->guessExtension();
 
@@ -44,8 +44,8 @@ class FileSaver
 
         try {
             $uploadedFile->move($this->uploadsDir, $fileName);
-        }catch(\Exception $exception){
-            return $exception->getMessage();
+        }catch(FileException $exception){
+            return null;
         }
 
         return $fileName;
