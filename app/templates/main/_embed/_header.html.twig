@@ -12,8 +12,13 @@
             </li>
              {% if is_granted('ROLE_JOURNALIST') %}
                  <li class="nav-item">
-                     <a class="nav-link" href="{{ path('main_post_list') }}">Posts</a>
+                     <a class="nav-link" href="{{ path('main_post_status', {'id' : 1}) }}">Posts</a>
                  </li>
+             {% endif %}
+             {% if is_granted('ROLE_ADMIN') %}
+             <li class="nav-item">
+                 <a class="nav-link" href="{{ path('admin_dashboard') }}">Admin Panel</a>
+             </li>
              {% endif %}
          </ul>
       </div>

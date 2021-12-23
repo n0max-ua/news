@@ -142,6 +142,15 @@ class Post
         return $this;
     }
 
+    public static function getStatuses(): array
+    {
+        return [
+          self::STATUS_CREATED => 'Created',
+          self::STATUS_POSTED => 'Posted',
+          self::STATUS_DELETED => 'Deleted'
+        ];
+    }
+
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->created_at;

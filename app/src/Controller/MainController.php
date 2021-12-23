@@ -24,7 +24,7 @@ class MainController extends AbstractController
     public function news(PostRepository $postRepository): Response
     {
         $posts = $postRepository->findBy(
-            ['status' => 2],
+            ['status' => Post::STATUS_POSTED],
             ['posted_at' => 'ASC'],
             50
         );
@@ -39,8 +39,9 @@ class MainController extends AbstractController
      */
     public function item(Post $post): Response
     {
-        return $this->render('main/default/news-item.html.twig',[
+        return $this->render('main/default/news-item.html.twig', [
             'post' => $post
         ]);
     }
+
 }

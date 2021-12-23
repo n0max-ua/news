@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DashboardController extends AbstractDashboardController
 {
     /**
-     * @Route("/admin", name="admin")
+     * @Route("/admin", name="admin_dashboard")
      */
     public function index(): Response
     {
@@ -43,6 +43,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Back to homepage', 'fa fa-home', 'main_homepage');
 
         yield MenuItem::section('');
-        yield MenuItem::linkToLogout('LogOut', 'fa fa-right');
+        yield MenuItem::linkToLogout('LogOut', 'fa fa-sign-out-alt');
     }
 }

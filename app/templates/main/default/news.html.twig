@@ -4,12 +4,17 @@
 
 {% block body %}
     <h1 class="mb-3">Last News</h1>
+    {% if posts|length %}
         {% for post in posts %}
             <div class="border-bottom border-secondary row mb-2 p-3">
                 <div class="col-md-1 d-flex justify-content-center align-items-center">{{ post.createdAt | date('H:i') }}</div>
                 <div class="col-md-11">
-                    <a class="nav-link text-dark" href="{{ path('main_news_item', {'id': post.id}) }}">{{ post.title }}</a>
+                    <a class="nav-link text-dark"
+                       href="{{ path('main_news_item', {'id': post.id}) }}">{{ post.title }}</a>
                 </div>
             </div>
         {% endfor %}
+    {% else %}
+        <h3>No news for now</h3>
+    {% endif %}
 {% endblock %}

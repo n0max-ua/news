@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Entity\User;
 use App\Form\PostFormType;
 use App\Repository\PostRepository;
 use App\Utils\FileSaver;
@@ -18,41 +19,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostController extends AbstractController
 {
     /**
-     * @Route("/list", name="list")
-     */
-    public function index(PostRepository $postRepository): Response
-    {
-        $posts = $postRepository->findBy(['user' => $this->getUser()]);
-
-        return $this->render('main/post/list.html.twig', [
-            'posts' => $posts,
-            'title' => "All Posts"
-        ]);
-    }
-
-    /**
      * @Route("/status/{id}", name="status")
      */
-    public function status(Request $request, PostRepository $postRepository, int $id): Response
+    public function status(PostRepository $postRepository, $id): Response
     {
+        if (!array_key_exists($id, Post::getStatuses())){
+            return $this->render('bundles/TwigBundle/Exception/error.html.twig');
+        }
+
         $posts = $postRepository->findBy([
             'status' => $id,
             'user' => $this->getUser()
         ]);
 
-        $title = '';
-
-        if ($id == Post::STATUS_CREATED){
-            $title = 'Created Posts';
-        } elseif ($id == Post::STATUS_POSTED){
-            $title = 'Published Posts';
-        } elseif ($id == Post::STATUS_DELETED){
-            $title = 'Deleted Posts';
-        }
-
         return $this->render('main/post/list.html.twig', [
             'posts' => $posts,
-            'title' => $title
+            'statuses' => Post::getStatuses()
         ]);
     }
 
@@ -74,6 +56,7 @@ class PostController extends AbstractController
                 $post->setImage($image);
             }
 
+            /**@var User $user*/
             $user = $this->getUser();
             $post->setUser($user);
 
@@ -130,7 +113,7 @@ class PostController extends AbstractController
         $post->setDeletedAt(new \DateTimeImmutable());
         $managerRegistry->getManager()->flush();
 
-        return $this->redirectToRoute('main_post_list');
+        return $this->redirectToRoute('main_post_status', ['id' => 1]);
     }
 
 }
