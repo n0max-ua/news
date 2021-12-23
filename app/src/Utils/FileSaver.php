@@ -36,7 +36,7 @@ class FileSaver
      * @param UploadedFile $uploadedFile
      * @return string|null
      */
-    public function save(UploadedFile $uploadedFile): ?string
+    public function saveImage(UploadedFile $uploadedFile): ?string
     {
         $fileName = uniqid() .'.'. $uploadedFile->guessExtension();
 
@@ -49,6 +49,18 @@ class FileSaver
         }
 
         return $fileName;
+    }
+
+    public function removeImage(string $fileName)
+    {
+        $fileSystem = new Filesystem();
+        $fileImage = $this->uploadsDir .'/'. $fileName;
+
+        try {
+            $fileSystem->remove($fileImage);
+        } catch (FileException $exception) {
+            echo $exception->getMessage();
+        }
     }
 
     /**

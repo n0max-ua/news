@@ -37,7 +37,16 @@ class PostCrudController extends AbstractCrudController
             ImageField::new('image')
                 ->setBasePath('/uploads')
                 ->setUploadDir('public/uploads'),
-            IntegerField::new('status'),
+            NumberField::new('status')->formatValue(function ($value) {
+                switch ($value){
+                    case 2 :
+                        return 'posted';
+                    case 3 :
+                        return 'deleted';
+                    default:
+                        return 'created';
+                }
+            }),
             DateTimeField::new('created_at')
                 ->hideOnForm(),
             DateTimeField::new('posted_at')

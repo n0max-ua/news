@@ -12,6 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Post
 {
+    public const STATUS_CREATED = 1;
+    public const STATUS_POSTED = 2;
+    public const STATUS_DELETED = 3;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -70,7 +74,7 @@ class Post
     public function __construct()
     {
         $this->created_at = new \DateTimeImmutable();
-        $this->status = 1;
+        $this->status = self::STATUS_CREATED;
     }
 
     public function getId(): ?int
@@ -121,19 +125,18 @@ class Post
 
     public function setStatus(int $status): self
     {
-        if ($status <= 0 || $status > 3){
-            $status = 1;
-        }
-
-        $this->status = $status;
-
         if ($status == 2){
+            $this->status = self::STATUS_POSTED;
             $this->deleted_at = null;
             $this->posted_at = new \DateTimeImmutable();
-        }
-
-        if ($status == 3){
+        } elseif($status == 3){
+            $this->status = self::STATUS_DELETED;
             $this->deleted_at = new \DateTimeImmutable();
+        } else {
+            $this->status = self::STATUS_CREATED;
+            $this->created_at = new \DateTimeImmutable();
+            $this->deleted_at = null;
+            $this->posted_at = null;
         }
 
         return $this;
@@ -180,7 +183,7 @@ class Post
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 

@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
-use App\Form\EditProfileFormType;
+use App\Entity\User;
+use App\Form\ProfileFormType;
 use App\Repository\UserRepository;
 use App\Utils\FileSaver;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,23 +29,27 @@ class ProfileController extends AbstractController
     /**
      * @Route("/edit", name="edit")
      */
-    public function edit(Request $request, FileSaver $fileSaver, UserRepository $userRepository): Response
+    public function edit(Request $request, FileSaver $fileSaver, ManagerRegistry $managerRegistry): Response
     {
-        $email= $this->getUser()->getUserIdentifier();
-        $user = $userRepository->findOneBy(['email' => $email]);
+        /**@var User $user*/
+        $user = $this->getUser();
+        $oldPhoto = $user->getPhoto();
 
-        $form = $this->createForm(EditProfileFormType::class, $user);
+        $form = $this->createForm(ProfileFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
             $uploadedFile = $form->get('photo')->getData();
 
             if ($uploadedFile){
-                $photo = $fileSaver->save($uploadedFile);
-                $user->setPhoto($photo);
+                if ($oldPhoto){
+                    $fileSaver->removeImage($oldPhoto);
+                }
+                $newPhoto = $fileSaver->saveImage($uploadedFile);
+                $user->setPhoto($newPhoto);
             }
 
-            $userRepository->save($user);
+            $managerRegistry ->getManager()->flush();
 
             return $this->redirectToRoute('main_profile_index');
         }
