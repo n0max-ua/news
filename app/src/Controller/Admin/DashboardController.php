@@ -14,11 +14,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class DashboardController extends AbstractDashboardController
 {
     /**
-     * @Route("/admin", name="admin_dashboard")
+     * @Route("/admin", name="admin")
      */
     public function index(): Response
     {
-        return $this->render('main/_embed/welcome-admin.html.twig');
+        return $this->render('main/_embed/_welcome-admin.html.twig');
     }
 
     public function configureDashboard(): Dashboard

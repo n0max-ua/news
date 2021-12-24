@@ -16,6 +16,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    public const ROLE_USER = 'ROLE_USER';
+    public const ROLE_JOURNALIST = 'ROLE_JOURNALIST';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -66,9 +70,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->roles[] = 'ROLE_USER';
+        $this->roles[] = self::ROLE_USER;
         $this->posts = new ArrayCollection();
-        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -113,7 +116,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = self::ROLE_USER;
 
         return array_unique($roles);
     }
@@ -123,6 +126,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    public static function getPossibleRoles(): array
+    {
+        return[
+          self::ROLE_USER => 'ROLE_USER',
+          self::ROLE_JOURNALIST => 'ROLE_JOURNALIST',
+          self::ROLE_ADMIN => 'ROLE_ADMIN'
+        ];
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Utils;
+namespace App\EventSubscriber;
 
 use App\Entity\Post;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;

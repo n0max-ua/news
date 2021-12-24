@@ -43,6 +43,7 @@ class PostController extends AbstractController
      */
     public function add(Request $request, FileSaver $fileSaver, ManagerRegistry $managerRegistry): Response
     {
+
         $post = new Post();
 
         $form = $this->createForm(PostFormType::class, $post);
