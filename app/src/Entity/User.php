@@ -17,7 +17,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public const ROLE_USER = 'ROLE_USER';
-    public const ROLE_JOURNALIST = 'ROLE_JOURNALIST';
     public const ROLE_ADMIN = 'ROLE_ADMIN';
 
     /**
@@ -68,10 +67,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $photo;
 
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $last_activity;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is_active;
+
     public function __construct()
     {
         $this->roles[] = self::ROLE_USER;
         $this->posts = new ArrayCollection();
+        $this->is_active = false;
+        $this->last_activity = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -126,15 +137,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = $roles;
 
         return $this;
-    }
-
-    public static function getPossibleRoles(): array
-    {
-        return[
-          self::ROLE_USER => 'ROLE_USER',
-          self::ROLE_JOURNALIST => 'ROLE_JOURNALIST',
-          self::ROLE_ADMIN => 'ROLE_ADMIN'
-        ];
     }
 
     /**
@@ -252,5 +254,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString()
     {
         return $this->email;
+    }
+
+    public function getLastActivity(): ?\DateTimeInterface
+    {
+        return $this->last_activity;
+    }
+
+    public function setLastActivity(?\DateTimeInterface $last_activity): self
+    {
+        $this->last_activity = $last_activity;
+
+        return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->is_active;
+    }
+
+    public function setIsActive(bool $is_active): self
+    {
+        $this->is_active = $is_active;
+
+        return $this;
+    }
+
+    public static function getPossibleRoles(): array
+    {
+        return[
+            self::ROLE_USER => 'ROLE_USER',
+            self::ROLE_ADMIN => 'ROLE_ADMIN'
+        ];
     }
 }

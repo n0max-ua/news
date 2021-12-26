@@ -10,11 +10,13 @@
             <li class="nav-item">
                <a class="nav-link" href="{{ path('main_news') }}">News</a>
             </li>
-             {% if is_granted('ROLE_JOURNALIST') %}
+             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                 {% if app.user.active %}
                  <li class="nav-item">
                      {% set status =  constant('App\\Entity\\Post::STATUS_CREATED') %}
                      <a class="nav-link" href="{{ path('main_post_status', {'id' : status}) }}">Posts</a>
                  </li>
+                 {% endif %}
              {% endif %}
              {% if is_granted('ROLE_ADMIN') %}
              <li class="nav-item">
