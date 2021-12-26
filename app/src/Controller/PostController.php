@@ -23,7 +23,7 @@ class PostController extends AbstractController
      */
     public function status(PostRepository $postRepository, $id): Response
     {
-        if (!array_key_exists($id, Post::getStatuses())){
+        if (!in_array($id, Post::getStatuses())){
             return $this->render('bundles/TwigBundle/Exception/error.html.twig');
         }
 

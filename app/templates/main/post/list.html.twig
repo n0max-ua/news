@@ -1,27 +1,47 @@
 {% extends 'main/base.html.twig' %}
 
-{% block title %}{{ statuses[app.request.get('id')] }}{% endblock %}
+{% set created =  constant('App\\Entity\\Post::STATUS_CREATED') %}
+{% set posted =  constant('App\\Entity\\Post::STATUS_POSTED') %}
+{% set deleted =  constant('App\\Entity\\Post::STATUS_DELETED') %}
+
+{% block title %}
+    {% if app.request.get('id') == created  %}
+        Created
+    {% elseif app.request.get('id') == posted %}
+        Posted
+    {% elseif app.request.get('id') == deleted %}
+        Deleted
+    {% endif %}
+{% endblock %}
 
 {% block body %}
-    <h1 class="mb-3">{{ statuses[app.request.get('id')] }}</h1>
+    <h1 class="mb-3">
+        {% if app.request.get('id') == created  %}
+            Created
+        {% elseif app.request.get('id') == posted %}
+            Posted
+        {% elseif app.request.get('id') == deleted %}
+            Deleted
+        {% endif %}
+    </h1>
     <a class="btn btn-primary btn-sm mb-2" href="{{ path('main_post_add') }}">Add new Post</a>
     <hr>
-    <a class="btn btn-outline-primary btn-sm mb-2 {{ statuses[app.request.get('id')] == statuses[1] ? 'active' : '' }}"
-       href="{{ path('main_post_status', {'id': 1}) }}">{{ statuses[1] }}</a>
-    <a class="btn btn-outline-primary btn-sm mb-2 {{ statuses[app.request.get('id')] == statuses[2] ? 'active' : '' }}"
-       href="{{ path('main_post_status', {'id': 2}) }}">{{ statuses[2] }}</a>
-    <a class="btn btn-outline-primary btn-sm mb-2 {{ statuses[app.request.get('id')] == statuses[3] ? 'active' : '' }}"
-       href="{{ path('main_post_status', {'id': 3}) }}">{{ statuses[3] }}</a>
+    <a class="btn btn-outline-primary btn-sm mb-2 {{ app.request.get('id') == created ? 'active' : '' }}"
+       href="{{ path('main_post_status', {'id': created}) }}">Created</a>
+    <a class="btn btn-outline-primary btn-sm mb-2 {{ app.request.get('id') == posted ? 'active' : '' }}"
+       href="{{ path('main_post_status', {'id': posted}) }}">Posted</a>
+    <a class="btn btn-outline-primary btn-sm mb-2 {{ app.request.get('id') == deleted ? 'active' : '' }}"
+       href="{{ path('main_post_status', {'id': deleted }) }}">Deleted</a>
     {% if posts|length %}
     {% for post in posts %}
         <div class="border-bottom row mb-2 p-3">
             <div class="col-md-1 d-flex justify-content-center align-items-center">{{ post.createdAt | date('H:i') }}</div>
             <div class="col-md-11">
                 <h4>{{ post.title }}</h4>
-                {% if post.status == 1 in posts %}
+                {% if post.status == created in posts %}
                     <a class="btn btn-secondary btn-sm" href="{{ path('main_post_edit', {'id': post.id}) }}">Edit</a>
                     <a class="btn btn-danger btn-sm" href="{{ path('main_post_delete', {'id': post.id}) }}">Delete</a>
-                {% elseif post.status == 3 in posts %}
+                {% elseif post.status == deleted in posts %}
                     <a class="btn btn-secondary btn-sm" href="{{ path('main_post_edit', {'id': post.id}) }}">Edit</a>
                 {% else %}
                     <a class="btn btn-secondary btn-sm" href="{{ path('main_news_item', {'id': post.id}) }}">View</a>

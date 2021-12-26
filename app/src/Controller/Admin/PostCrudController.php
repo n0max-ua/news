@@ -3,10 +3,16 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Post;
+use Doctrine\ORM\QueryBuilder;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
@@ -15,6 +21,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\DateTimeFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\NumericFilter;
 
 class PostCrudController extends AbstractCrudController
 {
@@ -40,11 +50,11 @@ class PostCrudController extends AbstractCrudController
             NumberField::new('status')->formatValue(function ($value) {
                 switch ($value){
                     case 2 :
-                        return 'posted';
+                        return 'Posted';
                     case 3 :
-                        return 'deleted';
+                        return 'Deleted';
                     default:
-                        return 'created';
+                        return 'Created';
                 }
             }),
             DateTimeField::new('created_at')
@@ -61,5 +71,16 @@ class PostCrudController extends AbstractCrudController
     {
         return $actions
             ->remove(Crud::PAGE_INDEX, Action::DELETE);
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add(EntityFilter::new('user'))
+            ->add(EntityFilter::new('category'))
+            ->add(NumericFilter::new('status'))
+            ->add(DatetimeFilter::new('created_at'))
+            ->add(DatetimeFilter::new('posted_at'))
+            ->add(DatetimeFilter::new('deleted_at'));
     }
 }

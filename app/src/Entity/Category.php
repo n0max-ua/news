@@ -29,9 +29,15 @@ class Category
      */
     private $posts;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is_deleted;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->is_deleted = false;
     }
 
     public function getId(): ?int
@@ -84,5 +90,17 @@ class Category
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getIsDeleted(): ?bool
+    {
+        return $this->is_deleted;
+    }
+
+    public function setIsDeleted(bool $is_deleted): self
+    {
+        $this->is_deleted = $is_deleted;
+
+        return $this;
     }
 }

@@ -12,7 +12,8 @@
             </li>
              {% if is_granted('ROLE_JOURNALIST') %}
                  <li class="nav-item">
-                     <a class="nav-link" href="{{ path('main_post_status', {'id' : 1}) }}">Posts</a>
+                     {% set status =  constant('App\\Entity\\Post::STATUS_CREATED') %}
+                     <a class="nav-link" href="{{ path('main_post_status', {'id' : status}) }}">Posts</a>
                  </li>
              {% endif %}
              {% if is_granted('ROLE_ADMIN') %}

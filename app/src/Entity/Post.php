@@ -145,9 +145,9 @@ class Post
     public static function getStatuses(): array
     {
         return [
-          self::STATUS_CREATED => 'Created',
-          self::STATUS_POSTED => 'Posted',
-          self::STATUS_DELETED => 'Deleted'
+          self::STATUS_CREATED,
+          self::STATUS_POSTED,
+          self::STATUS_DELETED
         ];
     }
 
