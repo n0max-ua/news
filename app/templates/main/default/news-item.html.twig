@@ -5,10 +5,9 @@
 {% block body %}
     <div class="row">
         <div class="col-md-2">
-            {# side#}
+            {# side #}
         </div>
         <div class="col-md-8 py-5">
-            {{ app.request.get('id') }}
             <h2 class="mb-3">{{ post.title }}</h2>
             <p>{{ post.createdAt | date('y.m.d H:i') }} <small>by {{ post.user.email }}</small></p>
             {% if post.image %}
@@ -17,21 +16,22 @@
                 </div>
             {% endif %}
             <p class="fs-5 p-1 text-justify">{{ post.content }}</p>
-                <div class="pt-5" id="disqus_thread"></div>
-                <div id="disqus_thread"></div>
-                <script>
-                    let disqus_config = function () {
-                        this.page.url = '{{ path('main_news_item', {'id': post.id}) }}';
-                        this.page.identifier = {{ post.id }};
-                    };
-                    (function() {
-                        let d = document, s = d.createElement('script');
-                        s.src = 'https://my-site-ugwcdoz82j.disqus.com/embed.js';
-                        s.setAttribute('data-timestamp', +new Date());
-                        (d.head || d.body).appendChild(s);
-                    })();
-                </script>
-                <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            <div class="pt-5" id="disqus_thread"></div>
+            <div id="disqus_thread"></div>
+            <script>
+                let disqus_config = function () {
+                    this.page.url = '{{ path('main_news_item', {'id': post.id}) }}';
+                    this.page.identifier = {{ post.id }};
+                };
+                (function () {
+                    let d = document, s = d.createElement('script');
+                    s.src = 'https://my-site-ugwcdoz82j.disqus.com/embed.js';
+                    s.setAttribute('data-timestamp', +new Date());
+                    (d.head || d.body).appendChild(s);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered
+                    by Disqus.</a></noscript>
         </div>
         <div class="col-md-2">
             {# side #}

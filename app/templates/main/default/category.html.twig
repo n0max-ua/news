@@ -1,6 +1,6 @@
 {% extends 'main/base.html.twig' %}
 
-{% block title %}News{% endblock %}
+{% block title %}{{ category.name }}{% endblock %}
 
 {% block body %}
     <div class="row">
@@ -8,7 +8,7 @@
             {{ render(controller('\\App\\Controller\\EmbedController::showCategories')) }}
         </div>
         <div class="col-10">
-            <h1 class="mb-3">Last News</h1>
+            <h1 class="mb-3">{{ category.name }} news</h1>
             {% if posts|length %}
                 {% for post in posts %}
                     <div class="border-bottom border-secondary row mb-2 p-3">

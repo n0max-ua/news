@@ -3,5 +3,11 @@
 {% block title %}Homepage{% endblock %}
 
 {% block body %}
-    index
+    <div class="row">
+        <div class="col-4">
+            {{ render(controller('App\\Controller\\EmbedController::showLastNews')) }}
+        </div>
+        <div class="col-8">
+        </div>
+    </div>
 {% endblock %}

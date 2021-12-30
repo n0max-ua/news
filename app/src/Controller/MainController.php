@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Post;
 use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -41,6 +42,21 @@ class MainController extends AbstractController
     {
         return $this->render('main/default/news-item.html.twig', [
             'post' => $post
+        ]);
+    }
+    /**
+     * @Route("/news/category/{id}", name="main_news_category")
+     */
+    public function category(Category $category, PostRepository $postRepository): Response
+    {
+        $posts = $postRepository->findBy([
+            'category' => $category->getId(),
+            'status' => 2
+        ]);
+
+        return $this->render('main/default/category.html.twig', [
+            'category' => $category,
+            'posts' => $posts
         ]);
     }
 
