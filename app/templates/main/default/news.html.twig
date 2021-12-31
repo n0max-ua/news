@@ -19,6 +19,9 @@
                         </div>
                     </div>
                 {% endfor %}
+                <div class="d-flex justify-content-center">
+                    {{ knp_pagination_render(posts) }}
+                </div>
             {% else %}
                 <h3>No news for now</h3>
             {% endif %}

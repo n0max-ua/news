@@ -8,6 +8,7 @@ use App\Form\PostFormType;
 use App\Repository\PostRepository;
 use App\Utils\FileSaver;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,16 +22,22 @@ class PostController extends AbstractController
     /**
      * @Route("/status/{id}", name="status")
      */
-    public function status(PostRepository $postRepository, $id): Response
+    public function status(Request $request, PostRepository $postRepository, $id, PaginatorInterface $paginator): Response
     {
         if (!in_array($id, Post::getStatuses())){
             return $this->render('bundles/TwigBundle/Exception/error.html.twig');
         }
 
-        $posts = $postRepository->findBy([
+        $query = $postRepository->findBy([
             'status' => $id,
             'user' => $this->getUser()
         ]);
+
+        $posts = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            10
+        );
 
         return $this->render('main/post/list.html.twig', [
             'posts' => $posts,

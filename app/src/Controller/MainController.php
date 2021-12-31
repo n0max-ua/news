@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Post;
 use App\Repository\PostRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -22,12 +24,18 @@ class MainController extends AbstractController
     /**
      * @Route("/news", name="main_news")
      */
-    public function news(PostRepository $postRepository): Response
+    public function news(Request $request, PostRepository $postRepository, PaginatorInterface $paginator): Response
     {
-        $posts = $postRepository->findBy(
+        $query = $postRepository->findBy(
             ['status' => Post::STATUS_POSTED],
             ['posted_at' => 'ASC'],
             50
+        );
+
+        $posts = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            10
         );
 
         return $this->render('main/default/news.html.twig', [
@@ -47,12 +55,18 @@ class MainController extends AbstractController
     /**
      * @Route("/news/category/{id}", name="main_news_category")
      */
-    public function category(Category $category, PostRepository $postRepository): Response
+    public function category(Request $request, Category $category, PostRepository $postRepository, PaginatorInterface $paginator): Response
     {
-        $posts = $postRepository->findBy([
+        $query = $postRepository->findBy([
             'category' => $category->getId(),
-            'status' => 2
+            'status' => Post::STATUS_POSTED
         ]);
+
+        $posts = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            10
+        );
 
         return $this->render('main/default/category.html.twig', [
             'category' => $category,
