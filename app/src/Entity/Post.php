@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PostRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -38,7 +39,6 @@ class Post
      */
     private $image;
 
-    //status: 1-created, 2-published, 3-deleted
     /**
      * @ORM\Column(type="smallint")
      */
@@ -73,20 +73,30 @@ class Post
 
     public function __construct()
     {
-        $this->created_at = new \DateTimeImmutable();
+        $this->created_at = new DateTimeImmutable();
         $this->status = self::STATUS_CREATED;
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
+    /**
+     * @param string $title
+     * @return $this
+     */
     public function setTitle(string $title): self
     {
         $this->title = $title;
@@ -94,11 +104,18 @@ class Post
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getContent(): ?string
     {
         return $this->content;
     }
 
+    /**
+     * @param string $content
+     * @return $this
+     */
     public function setContent(string $content): self
     {
         $this->content = $content;
@@ -106,11 +123,18 @@ class Post
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getImage(): ?string
     {
         return $this->image;
     }
 
+    /**
+     * @param string|null $image
+     * @return $this
+     */
     public function setImage(?string $image): self
     {
         $this->image = $image;
@@ -118,23 +142,30 @@ class Post
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
     public function getStatus(): ?int
     {
         return $this->status;
     }
 
+    /**
+     * @param int $status
+     * @return $this
+     */
     public function setStatus(int $status): self
     {
-        if ($status == 2){
+        if ($status == 2) {
             $this->status = self::STATUS_POSTED;
             $this->deleted_at = null;
-            $this->posted_at = new \DateTimeImmutable();
-        } elseif($status == 3){
+            $this->posted_at = new DateTimeImmutable();
+        } elseif ($status == 3) {
             $this->status = self::STATUS_DELETED;
-            $this->deleted_at = new \DateTimeImmutable();
+            $this->deleted_at = new DateTimeImmutable();
         } else {
             $this->status = self::STATUS_CREATED;
-            $this->created_at = new \DateTimeImmutable();
+            $this->created_at = new DateTimeImmutable();
             $this->deleted_at = null;
             $this->posted_at = null;
         }
@@ -142,56 +173,87 @@ class Post
         return $this;
     }
 
+    /**
+     * @return int[]
+     */
     public static function getStatuses(): array
     {
         return [
-          self::STATUS_CREATED,
-          self::STATUS_POSTED,
-          self::STATUS_DELETED
+            self::STATUS_CREATED,
+            self::STATUS_POSTED,
+            self::STATUS_DELETED
         ];
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    /**
+     * @return DateTimeImmutable|null
+     */
+    public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
+    /**
+     * @param DateTimeImmutable $created_at
+     * @return $this
+     */
+    public function setCreatedAt(DateTimeImmutable $created_at): self
     {
         $this->created_at = $created_at;
 
         return $this;
     }
 
-    public function getPostedAt(): ?\DateTimeImmutable
+    /**
+     * @return DateTimeImmutable|null
+     */
+    public function getPostedAt(): ?DateTimeImmutable
     {
         return $this->posted_at;
     }
 
-    public function setPostedAt(?\DateTimeImmutable $posted_at): self
+    /**
+     * @param DateTimeImmutable|null $posted_at
+     * @return $this
+     */
+    public function setPostedAt(?DateTimeImmutable $posted_at): self
     {
         $this->posted_at = $posted_at;
 
         return $this;
     }
 
-    public function getDeletedAt(): ?\DateTimeImmutable
+    /**
+     * @return DateTimeImmutable|null
+     */
+    public function getDeletedAt(): ?DateTimeImmutable
     {
         return $this->deleted_at;
     }
 
-    public function setDeletedAt(?\DateTimeImmutable $deleted_at): self
+    /**
+     * @param DateTimeImmutable|null $deleted_at
+     * @return $this
+     */
+    public function setDeletedAt(?DateTimeImmutable $deleted_at): self
     {
         $this->deleted_at = $deleted_at;
 
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User $user
+     * @return $this
+     */
     public function setUser(User $user): self
     {
         $this->user = $user;
@@ -199,11 +261,18 @@ class Post
         return $this;
     }
 
+    /**
+     * @return Category|null
+     */
     public function getCategory(): ?Category
     {
         return $this->category;
     }
 
+    /**
+     * @param Category|null $category
+     * @return $this
+     */
     public function setCategory(?Category $category): self
     {
         $this->category = $category;

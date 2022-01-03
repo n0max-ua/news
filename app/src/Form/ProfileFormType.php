@@ -12,20 +12,26 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProfileFormType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextType::class)
-            ->add('surname',TextType::class)
+            ->add('surname', TextType::class)
             ->add('photo', FileType::class, [
                 'label' => 'Choose new photo',
                 'mapped' => false,
                 'required' => false
             ])
-            ->add('save', SubmitType::class)
-        ;
+            ->add('save', SubmitType::class);
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

@@ -14,11 +14,17 @@ class PasswordEncoder implements EventSubscriberInterface
      */
     private UserPasswordHasherInterface $userPasswordHasher;
 
+    /**
+     * @param UserPasswordHasherInterface $userPasswordHasher
+     */
     public function __construct(UserPasswordHasherInterface $userPasswordHasher)
     {
         $this->userPasswordHasher = $userPasswordHasher;
     }
 
+    /**
+     * @return string[][]
+     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -26,13 +32,16 @@ class PasswordEncoder implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * @param BeforeEntityPersistedEvent $event
+     */
     public function setPassword(BeforeEntityPersistedEvent $event)
     {
         $entity = $event->getEntityInstance();
 
-        if ($entity instanceof User){
-           $encodedPassword = $this->userPasswordHasher->hashPassword($entity, $entity->getPassword());
-           $entity->setPassword($encodedPassword);
+        if ($entity instanceof User) {
+            $encodedPassword = $this->userPasswordHasher->hashPassword($entity, $entity->getPassword());
+            $entity->setPassword($encodedPassword);
         }
     }
 }

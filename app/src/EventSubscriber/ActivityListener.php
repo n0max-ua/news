@@ -14,11 +14,17 @@ class ActivityListener implements EventSubscriberInterface{
      */
     private Security $security;
 
+    /**
+     * @param Security $security
+     */
     public function __construct(Security $security)
     {
         $this->security = $security;
     }
 
+    /**
+     * @return string[]
+     */
     public static function getSubscribedEvents(): array
     {
         return [

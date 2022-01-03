@@ -14,11 +14,18 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\BooleanFilter;
 
 class CategoryCrudController extends AbstractCrudController
 {
+    /**
+     * @return string
+     */
     public static function getEntityFqcn(): string
     {
         return Category::class;
     }
 
+    /**
+     * @param string $pageName
+     * @return iterable
+     */
     public function configureFields(string $pageName): iterable
     {
         return [
@@ -27,12 +34,20 @@ class CategoryCrudController extends AbstractCrudController
         ];
     }
 
+    /**
+     * @param Actions $actions
+     * @return Actions
+     */
     public function configureActions(Actions $actions): Actions
     {
         return $actions
             ->remove(Crud::PAGE_INDEX, Action::DELETE);
     }
 
+    /**
+     * @param Filters $filters
+     * @return Filters
+     */
     public function configureFilters(Filters $filters): Filters
     {
         return $filters

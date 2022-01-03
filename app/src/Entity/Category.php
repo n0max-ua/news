@@ -40,16 +40,26 @@ class Category
         $this->is_deleted = false;
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -65,6 +75,10 @@ class Category
         return $this->posts;
     }
 
+    /**
+     * @param Post $post
+     * @return $this
+     */
     public function addPost(Post $post): self
     {
         if (!$this->posts->contains($post)) {
@@ -75,10 +89,13 @@ class Category
         return $this;
     }
 
+    /**
+     * @param Post $post
+     * @return $this
+     */
     public function removePost(Post $post): self
     {
         if ($this->posts->removeElement($post)) {
-            // set the owning side to null (unless already changed)
             if ($post->getCategory() === $this) {
                 $post->setCategory(null);
             }
@@ -87,16 +104,26 @@ class Category
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function __toString()
     {
         return $this->name;
     }
 
+    /**
+     * @return bool|null
+     */
     public function getIsDeleted(): ?bool
     {
         return $this->is_deleted;
     }
 
+    /**
+     * @param bool $is_deleted
+     * @return $this
+     */
     public function setIsDeleted(bool $is_deleted): self
     {
         $this->is_deleted = $is_deleted;

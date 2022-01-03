@@ -7,7 +7,7 @@ use App\Entity\User;
 use App\Form\PostFormType;
 use App\Repository\PostRepository;
 use App\Utils\FileSaver;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,11 +20,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostController extends AbstractController
 {
     /**
+     * @param Request $request
+     * @param PostRepository $postRepository
+     * @param $id
+     * @param PaginatorInterface $paginator
+     * @return Response
      * @Route("/status/{id}", name="status")
      */
     public function status(Request $request, PostRepository $postRepository, $id, PaginatorInterface $paginator): Response
     {
-        if (!in_array($id, Post::getStatuses())){
+        if (!in_array($id, Post::getStatuses())) {
             return $this->render('bundles/TwigBundle/Exception/error.html.twig');
         }
 
@@ -46,30 +51,35 @@ class PostController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param FileSaver $fileSaver
+     * @param EntityManagerInterface $entityManager
+     * @return Response
      * @Route("/add", name="add")
      */
-    public function add(Request $request, FileSaver $fileSaver, ManagerRegistry $managerRegistry): Response
+    public function add(Request $request, FileSaver $fileSaver, EntityManagerInterface $entityManager): Response
     {
-
         $post = new Post();
 
         $form = $this->createForm(PostFormType::class, $post);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $uploadedFile = $form->get('image')->getData();
 
-            if ($uploadedFile){
+            if ($uploadedFile) {
                 $image = $fileSaver->saveImage($uploadedFile);
                 $post->setImage($image);
             }
 
-            /**@var User $user*/
+            /**@var User $user */
             $user = $this->getUser();
             $post->setUser($user);
 
-            $managerRegistry->getManager()->persist($post);
-            $managerRegistry->getManager()->flush();
+            $entityManager->persist($post);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'You create new post!');
 
             return $this->redirectToRoute('main_post_edit', ['id' => $post->getId()]);
         }
@@ -81,19 +91,24 @@ class PostController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param FileSaver $fileSaver
+     * @param Post $post
+     * @param EntityManagerInterface $entityManager
+     * @return Response
      * @Route("/{id}/edit", name="edit")
      */
-    public function edit(Request $request, FileSaver $fileSaver, Post $post, ManagerRegistry $managerRegistry): Response
+    public function edit(Request $request, FileSaver $fileSaver, Post $post, EntityManagerInterface $entityManager): Response
     {
         $oldImage = $post->getImage();
         $form = $this->createForm(PostFormType::class, $post);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $uploadedFile = $form->get('image')->getData();
 
-            if ($uploadedFile){
-                if ($oldImage){
+            if ($uploadedFile) {
+                if ($oldImage) {
                     $fileSaver->removeImage($oldImage);
                 }
                 $newImage = $fileSaver->saveImage($uploadedFile);
@@ -101,7 +116,9 @@ class PostController extends AbstractController
             }
 
             $post->setStatus(Post::STATUS_CREATED);
-            $managerRegistry->getManager()->flush();
+            $entityManager->flush();
+
+            $this->addFlash('success', 'You edit the post!');
 
             return $this->redirectToRoute('main_post_edit', ['id' => $post->getId()]);
         }
@@ -113,15 +130,17 @@ class PostController extends AbstractController
     }
 
     /**
+     * @param Post $post
+     * @param EntityManagerInterface $entityManager
+     * @return Response
      * @Route("/{id}/delete", name="delete")
      */
-    public function delete(Post $post, ManagerRegistry $managerRegistry): Response
+    public function delete(Post $post, EntityManagerInterface $entityManager): Response
     {
         $post->setStatus(3);
         $post->setDeletedAt(new \DateTimeImmutable());
-        $managerRegistry->getManager()->flush();
+        $entityManager->flush();
 
         return $this->redirectToRoute('main_post_status', ['id' => 1]);
     }
-
 }

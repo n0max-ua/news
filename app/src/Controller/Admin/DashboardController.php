@@ -19,6 +19,9 @@ class DashboardController extends AbstractDashboardController
      */
     private UserRepository $userRepository;
 
+    /**
+     * @param UserRepository $userRepository
+     */
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
@@ -35,12 +38,18 @@ class DashboardController extends AbstractDashboardController
         ]);
     }
 
+    /**
+     * @return Dashboard
+     */
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
             ->setTitle('Admin Panel');
     }
 
+    /**
+     * @return iterable
+     */
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToCrud('Posts', 'fa fa-circle', Post::class);

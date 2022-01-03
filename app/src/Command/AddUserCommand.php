@@ -16,25 +16,40 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AddUserCommand extends Command
 {
+    /**
+     * @var string
+     */
     protected static $defaultName = 'app:add-user';
+    /**
+     * @var string
+     */
     protected static $defaultDescription = 'Create user';
 
     /**
      * @var UserRepository
      */
-    private $userRepository;
+    private UserRepository $userRepository;
 
     /**
      * @var UserPasswordHasherInterface
      */
-    private $userPasswordHasher;
+    private UserPasswordHasherInterface $userPasswordHasher;
 
     /**
      * @var ManagerRegistry
      */
-    private $managerRegistry;
+    private ManagerRegistry $managerRegistry;
 
-    public function __construct(string $name = null, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher, ManagerRegistry $managerRegistry)
+    /**
+     * @param string|null $name
+     * @param UserRepository $userRepository
+     * @param UserPasswordHasherInterface $userPasswordHasher
+     * @param ManagerRegistry $managerRegistry
+     */
+    public function __construct(string                      $name = null,
+                                UserRepository              $userRepository,
+                                UserPasswordHasherInterface $userPasswordHasher,
+                                ManagerRegistry             $managerRegistry)
     {
         parent::__construct($name);
         $this->userRepository = $userRepository;
@@ -47,13 +62,16 @@ class AddUserCommand extends Command
         $this
             ->addOption('email', 'em', InputArgument::REQUIRED, 'Email')
             ->addOption('password', 'p', InputArgument::REQUIRED, 'Password')
-            ->addOption('isAdmin', '', InputArgument::OPTIONAL, 'Set if user is admin', 0)
-        ;
+            ->addOption('isAdmin', '', InputArgument::OPTIONAL, 'Set if user is admin', 0);
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
         $io = new SymfonyStyle($input, $output);
 
         $email = $input->getOption('email');
@@ -63,15 +81,15 @@ class AddUserCommand extends Command
         $io->title('Create User Command');
         $io->text('Please, enter some information');
 
-        if (!$email){
+        if (!$email) {
             $email = $io->ask('Email');
         }
 
-        if (!$password){
+        if (!$password) {
             $password = $io->askHidden('Password (hidden)');
         }
 
-        if (!$isAdmin){
+        if (!$isAdmin) {
             $question = new Question('Is admin? (1 or 0)', 0);
             $isAdmin = $io->askQuestion($question);
         }
@@ -80,7 +98,7 @@ class AddUserCommand extends Command
 
         try {
             $user = $this->createUser($email, $password, $isAdmin);
-        }catch (RuntimeException $exception){
+        } catch (RuntimeException $exception) {
             $io->comment($exception->getMessage());
 
             return Command::FAILURE;
@@ -102,18 +120,18 @@ class AddUserCommand extends Command
     {
         $existedUser = $this->userRepository->findOneBy(['email' => $email]);
 
-        if ($existedUser){
+        if ($existedUser) {
             throw new RuntimeException('User already exist');
         }
 
         $user = new User();
         $user->setEmail($email);
 
-        $hasedPassword = $this->userPasswordHasher->hashPassword($user, $password);
-        $user->setPassword($hasedPassword);
+        $hashedPassword = $this->userPasswordHasher->hashPassword($user, $password);
+        $user->setPassword($hashedPassword);
 
         $user->setRoles([$isAdmin ? User::ROLE_ADMIN : User::ROLE_USER]);
-        $user->setIsActive(true);
+        $user->setIsActive($isAdmin);
         $user->setIsVerified(true);
 
         $this->managerRegistry->getManager()->persist($user);

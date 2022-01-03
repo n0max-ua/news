@@ -28,11 +28,18 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\NumericFilter;
 
 class PostCrudController extends AbstractCrudController
 {
+    /**
+     * @return string
+     */
     public static function getEntityFqcn(): string
     {
         return Post::class;
     }
 
+    /**
+     * @param string $pageName
+     * @return iterable
+     */
     public function configureFields(string $pageName): iterable
     {
         return [
@@ -48,7 +55,7 @@ class PostCrudController extends AbstractCrudController
                 ->setBasePath('/uploads')
                 ->setUploadDir('public/uploads'),
             NumberField::new('status')->formatValue(function ($value) {
-                switch ($value){
+                switch ($value) {
                     case 2 :
                         return 'Posted';
                     case 3 :
@@ -67,12 +74,20 @@ class PostCrudController extends AbstractCrudController
         ];
     }
 
+    /**
+     * @param Actions $actions
+     * @return Actions
+     */
     public function configureActions(Actions $actions): Actions
     {
         return $actions
             ->remove(Crud::PAGE_INDEX, Action::DELETE);
     }
 
+    /**
+     * @param Filters $filters
+     * @return Filters
+     */
     public function configureFilters(Filters $filters): Filters
     {
         return $filters

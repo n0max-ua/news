@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends AbstractController
 {
     /**
-     * @Route("/", name="main_homepage")
+     * @return Response
      */
     public function index(): Response
     {
@@ -22,6 +22,10 @@ class MainController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param PostRepository $postRepository
+     * @param PaginatorInterface $paginator
+     * @return Response
      * @Route("/news", name="main_news")
      */
     public function news(Request $request, PostRepository $postRepository, PaginatorInterface $paginator): Response
@@ -44,6 +48,8 @@ class MainController extends AbstractController
     }
 
     /**
+     * @param Post $post
+     * @return Response
      * @Route("/news/{id}", name="main_news_item")
      */
     public function item(Post $post): Response
@@ -52,7 +58,13 @@ class MainController extends AbstractController
             'post' => $post
         ]);
     }
+
     /**
+     * @param Request $request
+     * @param Category $category
+     * @param PostRepository $postRepository
+     * @param PaginatorInterface $paginator
+     * @return Response
      * @Route("/news/category/{id}", name="main_news_category")
      */
     public function category(Request $request, Category $category, PostRepository $postRepository, PaginatorInterface $paginator): Response
@@ -73,5 +85,4 @@ class MainController extends AbstractController
             'posts' => $posts
         ]);
     }
-
 }

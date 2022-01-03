@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -34,7 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private  $roles = [];
 
     /**
      * @var string The hashed password
@@ -82,19 +84,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles[] = self::ROLE_USER;
         $this->posts = new ArrayCollection();
         $this->is_active = false;
-        $this->last_activity = new \DateTimeImmutable();
+        $this->last_activity = new DateTimeImmutable();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     * @return $this
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -126,12 +138,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = self::ROLE_USER;
 
         return array_unique($roles);
     }
 
+    /**
+     * @param array $roles
+     * @return $this
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -147,6 +162,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
+    /**
+     * @param string $password
+     * @return $this
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -170,15 +189,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials()
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
     }
 
+    /**
+     * @return bool
+     */
     public function isVerified(): bool
     {
         return $this->isVerified;
     }
 
+    /**
+     * @param bool $isVerified
+     * @return $this
+     */
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
@@ -194,6 +218,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->posts;
     }
 
+    /**
+     * @param Post $post
+     * @return $this
+     */
     public function addPost(Post $post): self
     {
         if (!$this->posts->contains($post)) {
@@ -204,6 +232,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @param Post $post
+     * @return $this
+     */
     public function removePost(Post $post): self
     {
         if ($this->posts->removeElement($post)) {
@@ -215,11 +247,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string|null $name
+     * @return $this
+     */
     public function setName(?string $name): self
     {
         $this->name = $name;
@@ -227,11 +266,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getSurname(): ?string
     {
         return $this->surname;
     }
 
+    /**
+     * @param string|null $surname
+     * @return $this
+     */
     public function setSurname(?string $surname): self
     {
         $this->surname = $surname;
@@ -239,11 +285,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPhoto(): ?string
     {
         return $this->photo;
     }
 
+    /**
+     * @param string|null $photo
+     * @return $this
+     */
     public function setPhoto(?string $photo): self
     {
         $this->photo = $photo;
@@ -251,28 +304,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function __toString()
     {
         return $this->email;
     }
 
-    public function getLastActivity(): ?\DateTimeInterface
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getLastActivity(): ?DateTimeInterface
     {
         return $this->last_activity;
     }
 
-    public function setLastActivity(?\DateTimeInterface $last_activity): self
+    /**
+     * @param DateTimeInterface|null $last_activity
+     * @return $this
+     */
+    public function setLastActivity(?DateTimeInterface $last_activity): self
     {
         $this->last_activity = $last_activity;
 
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
     public function getIsActive(): ?bool
     {
         return $this->is_active;
     }
 
+    /**
+     * @param bool $is_active
+     * @return $this
+     */
     public function setIsActive(bool $is_active): self
     {
         $this->is_active = $is_active;
@@ -280,6 +350,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return string[]
+     */
     public static function getPossibleRoles(): array
     {
         return[
