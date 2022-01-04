@@ -9,7 +9,6 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {
@@ -18,7 +17,7 @@ class MainController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('main/default/index.html.twig');
+        return $this->render('main/index.html.twig');
     }
 
     /**
@@ -26,7 +25,6 @@ class MainController extends AbstractController
      * @param PostRepository $postRepository
      * @param PaginatorInterface $paginator
      * @return Response
-     * @Route("/news", name="main_news")
      */
     public function news(Request $request, PostRepository $postRepository, PaginatorInterface $paginator): Response
     {
@@ -42,7 +40,7 @@ class MainController extends AbstractController
             10
         );
 
-        return $this->render('main/default/news.html.twig', [
+        return $this->render('main/news.html.twig', [
             'posts' => $posts
         ]);
     }
@@ -50,11 +48,10 @@ class MainController extends AbstractController
     /**
      * @param Post $post
      * @return Response
-     * @Route("/news/{id}", name="main_news_item")
      */
     public function item(Post $post): Response
     {
-        return $this->render('main/default/news-item.html.twig', [
+        return $this->render('main/news-item.html.twig', [
             'post' => $post
         ]);
     }
@@ -65,7 +62,6 @@ class MainController extends AbstractController
      * @param PostRepository $postRepository
      * @param PaginatorInterface $paginator
      * @return Response
-     * @Route("/news/category/{id}", name="main_news_category")
      */
     public function category(Request $request, Category $category, PostRepository $postRepository, PaginatorInterface $paginator): Response
     {
@@ -80,7 +76,7 @@ class MainController extends AbstractController
             10
         );
 
-        return $this->render('main/default/category.html.twig', [
+        return $this->render('main/category.html.twig', [
             'category' => $category,
             'posts' => $posts
         ]);

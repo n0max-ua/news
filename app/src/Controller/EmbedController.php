@@ -18,7 +18,7 @@ class EmbedController extends AbstractController
     {
         $posts = $postRepository->findBy(['status' => Post::STATUS_POSTED], ['id' => 'DESC'], 10);
 
-        return $this->render('main/_embed/_last_news.html.twig', [
+        return $this->render('_embed/_last-news.html.twig', [
             'posts' => $posts
         ]);
     }
@@ -31,7 +31,7 @@ class EmbedController extends AbstractController
     {
         $categories = $categoryRepository->findBy(['is_deleted' => false]);
 
-        return $this->render('main/_embed/_categories.html.twig', [
+        return $this->render('_embed/_categories.html.twig', [
             'categories' => $categories
         ]);
     }

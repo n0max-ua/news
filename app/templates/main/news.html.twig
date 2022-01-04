@@ -1,4 +1,4 @@
-{% extends 'main/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}News{% endblock %}
 
@@ -15,7 +15,7 @@
                         <div class="col-md-1 d-flex justify-content-center align-items-center">{{ post.createdAt | date('H:i') }}</div>
                         <div class="col-md-11">
                             <a class="nav-link text-dark"
-                               href="{{ path('main_news_item', {'id': post.id}) }}">{{ post.title }}</a>
+                               href="{{ path('news_item', {'id': post.id}) }}">{{ post.title }}</a>
                         </div>
                     </div>
                 {% endfor %}

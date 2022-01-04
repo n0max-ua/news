@@ -1,7 +1,71 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
-
-main_homepage:
+homepage:
   path: /
   controller: App\Controller\MainController::index
+
+news:
+  path: /news
+  controller: App\Controller\MainController::news
+
+news_item:
+  path: /news/{id}
+  controller: App\Controller\MainController::item
+
+news_category:
+  path: /news/category/{id}
+  controller: App\Controller\MainController::category
+
+post_status:
+  path: /post/status/{id}
+  controller: App\Controller\PostController::status
+
+post_add:
+  path: /post/add
+  controller: App\Controller\PostController::add
+
+post_edit:
+  path: /post/{id}/edit
+  controller: App\Controller\PostController::edit
+
+post_delete:
+  path: /post/{id}/delete
+  controller: App\Controller\PostController::delete
+
+profile_index:
+  path: /profile
+  controller: App\Controller\ProfileController::index
+
+profile_edit:
+  path: /profile/edit
+  controller: App\Controller\ProfileController::edit
+
+registration:
+  path: /registration
+  controller: App\Controller\RegistrationController::register
+
+verify_email:
+  path: /verify/email
+  controller: App\Controller\RegistrationController::verifyUserEmail
+
+forgot_password_request:
+  path: /reset-password
+  controller: App\Controller\ResetPasswordController::request
+
+check_email:
+  path: /reset-password/check-email
+  controller: App\Controller\ResetPasswordController::checkEmail
+
+reset_password:
+  path: /reset-password/reset/{token}
+  controller: App\Controller\ResetPasswordController::reset
+
+login:
+  path: /login
+  controller: App\Controller\SecurityController::login
+
+logout:
+  path: /logout
+  controller: App\Controller\SecurityController::logout
+
+admin:
+  path: /admin
+  controller: App\Controller\Admin\DashboardController::index

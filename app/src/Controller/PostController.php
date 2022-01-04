@@ -12,11 +12,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/post", name="main_post_")
- */
 class PostController extends AbstractController
 {
     /**
@@ -25,7 +21,6 @@ class PostController extends AbstractController
      * @param $id
      * @param PaginatorInterface $paginator
      * @return Response
-     * @Route("/status/{id}", name="status")
      */
     public function status(Request $request, PostRepository $postRepository, $id, PaginatorInterface $paginator): Response
     {
@@ -44,7 +39,7 @@ class PostController extends AbstractController
             10
         );
 
-        return $this->render('main/post/list.html.twig', [
+        return $this->render('post/list.html.twig', [
             'posts' => $posts,
             'statuses' => Post::getStatuses()
         ]);
@@ -55,7 +50,6 @@ class PostController extends AbstractController
      * @param FileSaver $fileSaver
      * @param EntityManagerInterface $entityManager
      * @return Response
-     * @Route("/add", name="add")
      */
     public function add(Request $request, FileSaver $fileSaver, EntityManagerInterface $entityManager): Response
     {
@@ -81,10 +75,10 @@ class PostController extends AbstractController
 
             $this->addFlash('success', 'You create new post!');
 
-            return $this->redirectToRoute('main_post_edit', ['id' => $post->getId()]);
+            return $this->redirectToRoute('post_edit', ['id' => $post->getId()]);
         }
 
-        return $this->render('main/post/edit.html.twig', [
+        return $this->render('post/edit.html.twig', [
             'post' => $post,
             'form' => $form->createView()
         ]);
@@ -96,7 +90,6 @@ class PostController extends AbstractController
      * @param Post $post
      * @param EntityManagerInterface $entityManager
      * @return Response
-     * @Route("/{id}/edit", name="edit")
      */
     public function edit(Request $request, FileSaver $fileSaver, Post $post, EntityManagerInterface $entityManager): Response
     {
@@ -120,10 +113,10 @@ class PostController extends AbstractController
 
             $this->addFlash('success', 'You edit the post!');
 
-            return $this->redirectToRoute('main_post_edit', ['id' => $post->getId()]);
+            return $this->redirectToRoute('post_edit', ['id' => $post->getId()]);
         }
 
-        return $this->render('main/post/edit.html.twig', [
+        return $this->render('post/edit.html.twig', [
             'post' => $post,
             'form' => $form->createView()
         ]);
@@ -133,7 +126,6 @@ class PostController extends AbstractController
      * @param Post $post
      * @param EntityManagerInterface $entityManager
      * @return Response
-     * @Route("/{id}/delete", name="delete")
      */
     public function delete(Post $post, EntityManagerInterface $entityManager): Response
     {
@@ -141,6 +133,6 @@ class PostController extends AbstractController
         $post->setDeletedAt(new \DateTimeImmutable());
         $entityManager->flush();
 
-        return $this->redirectToRoute('main_post_status', ['id' => 1]);
+        return $this->redirectToRoute('post_status', ['id' => 1]);
     }
 }

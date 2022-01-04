@@ -16,14 +16,10 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
-/**
- * @Route("/reset-password")
- */
 class ResetPasswordController extends AbstractController
 {
     use ResetPasswordControllerTrait;
@@ -49,9 +45,9 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * Display & process form to request a password reset.
-     *
-     * @Route("", name="app_forgot_password_request")
+     * @param Request $request
+     * @param MailerInterface $mailer
+     * @return Response
      */
     public function request(Request $request, MailerInterface $mailer): Response
     {
@@ -73,7 +69,7 @@ class ResetPasswordController extends AbstractController
     /**
      * Confirmation page after a user has requested a password reset.
      *
-     * @Route("/check-email", name="app_check_email")
+     * @return Response
      */
     public function checkEmail(): Response
     {
@@ -89,14 +85,17 @@ class ResetPasswordController extends AbstractController
     /**
      * Validates and process the reset URL that the user clicked in their email.
      *
-     * @Route("/reset/{token}", name="app_reset_password")
+     * @param Request $request
+     * @param UserPasswordHasherInterface $userPasswordHasher
+     * @param string|null $token
+     * @return Response
      */
     public function reset(Request $request, UserPasswordHasherInterface $userPasswordHasher, string $token = null): Response
     {
         if ($token) {
             $this->storeTokenInSession($token);
 
-            return $this->redirectToRoute('app_reset_password');
+            return $this->redirectToRoute('reset_password');
         }
 
         $token = $this->getTokenFromSession();
@@ -112,7 +111,7 @@ class ResetPasswordController extends AbstractController
                 $e->getReason()
             ));
 
-            return $this->redirectToRoute('app_forgot_password_request');
+            return $this->redirectToRoute('forgot_password_request');
         }
 
         $form = $this->createForm(ChangePasswordFormType::class);
@@ -133,7 +132,7 @@ class ResetPasswordController extends AbstractController
 
             $this->addFlash('success', 'You reset your password!');
 
-            return $this->redirectToRoute('main_login');
+            return $this->redirectToRoute('login');
         }
 
         return $this->render('reset_password/reset.html.twig', [
@@ -153,14 +152,14 @@ class ResetPasswordController extends AbstractController
         ]);
 
         if (!$user) {
-            return $this->redirectToRoute('app_check_email');
+            return $this->redirectToRoute('check_email');
         }
 
         try {
             $resetToken = $this->resetPasswordHelper->generateResetToken($user);
         } catch (ResetPasswordExceptionInterface $e) {
 
-            return $this->redirectToRoute('app_check_email');
+            return $this->redirectToRoute('check_email');
         }
 
         $email = (new TemplatedEmail())
@@ -180,6 +179,6 @@ class ResetPasswordController extends AbstractController
 
         $this->setTokenObjectInSession($resetToken);
 
-        return $this->redirectToRoute('app_check_email');
+        return $this->redirectToRoute('check_email');
     }
 }

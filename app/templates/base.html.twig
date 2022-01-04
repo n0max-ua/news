@@ -16,15 +16,15 @@
 </head>
 
 <body>
-{% include 'main/_embed/_header.html.twig' %}
-{% include 'main/_embed/_flash_message.html.twig' %}
+{% include '_embed/_header.html.twig' %}
+{% include '_embed/_flash_message.html.twig' %}
 
 <main class="main container p-3">
     {% block body %}
     {% endblock %}
 </main>
 
-{% include 'main/_embed/_footer.html.twig' %}
+{% include '_embed/_footer.html.twig' %}
 
 {% block javascripts %}{% endblock %}
 </body>

@@ -4,7 +4,7 @@
         <div>
             {% for category in categories %}
                 <div class="mb-3">
-                    <a href="{{ path('main_news_category', {'id' : category.id}) }}">{{ category.name }}</a>
+                    <a href="{{ path('news_category', {'id' : category.id}) }}">{{ category.name }}</a>
                 </div>
                 <hr>
             {% endfor %}

@@ -9,20 +9,15 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/profile", name="main_profile_")
- */
 class ProfileController extends AbstractController
 {
     /**
      * @return Response
-     * @Route("/", name="index")
      */
     public function index(): Response
     {
-        return $this->render('main/profile/index.html.twig');
+        return $this->render('profile/index.html.twig');
     }
 
     /**
@@ -30,7 +25,6 @@ class ProfileController extends AbstractController
      * @param FileSaver $fileSaver
      * @param EntityManagerInterface $entityManager
      * @return Response
-     * @Route("/edit", name="edit")
      */
     public function edit(Request $request, FileSaver $fileSaver, EntityManagerInterface $entityManager): Response
     {
@@ -54,10 +48,10 @@ class ProfileController extends AbstractController
 
             $entityManager->flush();
 
-            return $this->redirectToRoute('main_profile_index');
+            return $this->redirectToRoute('profile_index');
         }
 
-        return $this->render('main/profile/edit.html.twig', [
+        return $this->render('profile/edit.html.twig', [
             'form' => $form->createView()
         ]);
     }

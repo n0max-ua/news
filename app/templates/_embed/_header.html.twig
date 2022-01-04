@@ -3,18 +3,18 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav">
                 <li class="nav-item mr-5 fs-5">
-                    <a class="nav-link" href="{{ path('main_homepage') }}">
+                    <a class="nav-link" href="{{ path('homepage') }}">
                         <strong><i class="fab fa-neos"></i></strong>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('main_news') }}">News</a>
+                    <a class="nav-link" href="{{ path('news') }}">News</a>
                 </li>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     {% if app.user.isActive %}
                         <li class="nav-item">
                             {% set status =  constant('App\\Entity\\Post::STATUS_CREATED') %}
-                            <a class="nav-link" href="{{ path('main_post_status', {'id' : status}) }}">Posts</a>
+                            <a class="nav-link" href="{{ path('post_status', {'id' : status}) }}">Posts</a>
                         </li>
                     {% endif %}
                 {% endif %}
@@ -29,7 +29,7 @@
             <ul class="navbar-nav">
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('main_profile_index') }}">
+                        <a class="nav-link" href="{{ path('profile_index') }}">
                             {% if app.user.photo %}
                                 <img style="height: 25px; width: 25px; border-radius: 50%;"
                                      src="{{ asset('uploads/') }}{{ app.user.photo }}"/>
@@ -41,17 +41,17 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ path('main_logout') }}" class="nav-link">
+                        <a href="{{ path('logout') }}" class="nav-link">
                             <i class="fas fa-sign-out-alt"></i>
                             <span>Logout</span>
                         </a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('main_registration') }}">Registration</a>
+                        <a class="nav-link" href="{{ path('registration') }}">Registration</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('main_login') }}">Login</a>
+                        <a class="nav-link" href="{{ path('login') }}">Login</a>
                     </li>
                 {% endif %}
             </ul>

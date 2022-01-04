@@ -1,4 +1,4 @@
-{% extends 'main/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Homepage{% endblock %}
 
@@ -20,7 +20,7 @@
             <div id="disqus_thread"></div>
             <script>
                 let disqus_config = function () {
-                    this.page.url = '{{ path('main_news_item', {'id': post.id}) }}';
+                    this.page.url = '{{ path('news_item', {'id': post.id}) }}';
                     this.page.identifier = {{ post.id }};
                 };
                 (function () {

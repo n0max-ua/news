@@ -1,4 +1,4 @@
-{% extends 'main/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% set created =  constant('App\\Entity\\Post::STATUS_CREATED') %}
 {% set posted =  constant('App\\Entity\\Post::STATUS_POSTED') %}
@@ -24,14 +24,14 @@
             Deleted
         {% endif %}
     </h1>
-    <a class="btn btn-primary btn-sm mb-2" href="{{ path('main_post_add') }}">Add new Post</a>
+    <a class="btn btn-primary btn-sm mb-2" href="{{ path('post_add') }}">Add new Post</a>
     <hr>
     <a class="btn btn-outline-primary btn-sm mb-2 {{ app.request.get('id') == created ? 'active' : '' }}"
-       href="{{ path('main_post_status', {'id': created}) }}">Created</a>
+       href="{{ path('post_status', {'id': created}) }}">Created</a>
     <a class="btn btn-outline-primary btn-sm mb-2 {{ app.request.get('id') == posted ? 'active' : '' }}"
-       href="{{ path('main_post_status', {'id': posted}) }}">Posted</a>
+       href="{{ path('post_status', {'id': posted}) }}">Posted</a>
     <a class="btn btn-outline-primary btn-sm mb-2 {{ app.request.get('id') == deleted ? 'active' : '' }}"
-       href="{{ path('main_post_status', {'id': deleted }) }}">Deleted</a>
+       href="{{ path('post_status', {'id': deleted }) }}">Deleted</a>
     {% if posts|length %}
         {% for post in posts %}
             <div class="border-bottom row mb-2 p-3">
@@ -40,15 +40,15 @@
                     <h4>{{ post.title }}</h4>
                     {% if post.status == created %}
                         <a class="btn btn-secondary btn-sm"
-                           href="{{ path('main_post_edit', {'id': post.id}) }}">Edit</a>
+                           href="{{ path('post_edit', {'id': post.id}) }}">Edit</a>
                         <a class="btn btn-danger btn-sm"
-                           href="{{ path('main_post_delete', {'id': post.id}) }}">Delete</a>
+                           href="{{ path('post_delete', {'id': post.id}) }}">Delete</a>
                     {% elseif post.status == deleted %}
                         <a class="btn btn-secondary btn-sm"
-                           href="{{ path('main_post_edit', {'id': post.id}) }}">Edit</a>
+                           href="{{ path('post_edit', {'id': post.id}) }}">Edit</a>
                     {% elseif post.status == posted %}
                         <a class="btn btn-secondary btn-sm"
-                           href="{{ path('main_news_item', {'id': post.id}) }}">View</a>
+                           href="{{ path('news_item', {'id': post.id}) }}">View</a>
                     {% endif %}
                 </div>
             </div>

@@ -10,7 +10,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -28,12 +27,12 @@ class DashboardController extends AbstractDashboardController
     }
 
     /**
-     * @Route("/admin", name="admin")
+     * @return Response
      */
     public function index(): Response
     {
         $inactiveUsers = $this->userRepository->findBy(['is_active' => false]);
-        return $this->render('main/_embed/_welcome-admin.html.twig', [
+        return $this->render('_embed/_welcome-admin.html.twig', [
             'inactiveUsers' => $inactiveUsers
         ]);
     }
@@ -57,7 +56,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Categories', 'fa fa-circle', Category::class);
 
         yield MenuItem::section('<hr>');
-        yield MenuItem::linkToRoute('Back to homepage', 'fa fa-home', 'main_homepage');
+        yield MenuItem::linkToRoute('Back to homepage', 'fa fa-home', 'homepage');
 
         yield MenuItem::section('');
         yield MenuItem::linkToLogout('LogOut', 'fa fa-sign-out-alt');
