@@ -4,27 +4,29 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-6 shadow p-3">
             <h1 class="mb-3">Edit Profile</h1>
             {{ form_start(form) }}
-                <div class="row mb-2 p-3">
-                    {{ form_label(form.name) }}
-                    {{ form_widget(form.name) }}
-                </div>
-                <div class="row mb-2 p-3">
-                    {{ form_label(form.surname) }}
-                    {{ form_widget(form.surname) }}
-                </div>
-                <div class="row mb-2 p-3">
-                    {{ form_label(form.photo) }}
-                    {{ form_widget(form.photo) }}
-                </div>
+            <div class="row mb-2 p-3">
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name) }}
+            </div>
+            <div class="row mb-2 p-3">
+                {{ form_label(form.surname) }}
+                {{ form_widget(form.surname) }}
+            </div>
+            <div class="row mb-2 p-3">
+                {{ form_label(form.photo) }}
+                {{ form_widget(form.photo) }}
+            </div>
             {{ form_end(form) }}
         </div>
-        <div class="col-lg-6 d-flex justify-content-center align-items-center">
+        <div class="col-lg-6 d-flex justify-content-center align-items-center flex-column">
             {% if app.user.photo %}
                 <small>Current photo: </small>
-                <img class="m-3" style="max-height: 200px" src="{{ asset('uploads/') }}{{ app.user.photo }}"/>
+                <div class="border border-secondary p-1">
+                    <img class="m-3" style="max-height: 200px" src="{{ asset('uploads/') }}{{ app.user.photo }}"/>
+                </div>
             {% endif %}
         </div>
     </div>

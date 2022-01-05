@@ -1,7 +1,9 @@
-<div>
-    <h4 class="mb-3">Last News</h4>
+<div class="shadow">
+    <div class="text-center">
+        <h4 class="mb-1">Last News</h4>
+    </div>
     {% if posts|length %}
-        <div>
+        <div class=" p-3">
             {% for post in posts %}
                 <div class="mb-3">
                     <a href="{{ path('news_item', {'id' : post.id}) }}">{{ post.title }}</a>

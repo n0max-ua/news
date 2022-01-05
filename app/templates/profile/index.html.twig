@@ -3,42 +3,42 @@
 {% block title %}Profile{% endblock %}
 
 {% block body %}
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <div class="page-details mt-4">
-                        <h1 class="h4 mb-3 font-weight-normal title-gradient-1">Welcome, to your profile!</h1>
-                        <div class="row">
-                            <div class="col-xl-4">
-                                {% if app.user.photo %}
-                                    <img style="max-height: 200px" src="{{ asset('uploads/') }}{{ app.user.photo }}"/>
-                                {% else %}
-                                    <img style="max-height: 200px" src="{{ asset('build/images/no-img.jpg') }}"/>
-                                {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="mt-4 shadow p-3">
+                    <h1 class="h4 mb-3">Welcome, to your profile!</h1>
+                    <div class="row">
+                        <div class="col-xl-4 border border-secondary center m-2 p-1">
+                            {% if app.user.photo %}
+                                <img style="max-height: 180px" src="{{ asset('uploads/') }}{{ app.user.photo }}"/>
+                            {% else %}
+                                <img style="max-height: 180px" src="{{ asset('build/images/no-img.jpg') }}"/>
+                            {% endif %}
+                        </div>
+                        <div class="col-xl-6 p-3 ml-2">
+                            <div class="d-flex border-bottom">
+                                <strong>Email: </strong>
+                                <p class="ml-3 ">{{ app.user.email }}</p>
                             </div>
-                            <div class="col-xl-6 p-3 ml-2">
-                                <div class="d-flex border-bottom">
-                                    <strong>Email: </strong>
-                                    <p class="ml-3 ">{{ app.user.email }}</p>
-                                </div>
-                                <div class="d-flex border-bottom mt-3">
-                                    <strong>Name: </strong>
-                                    <p class="ml-3">{% if app.user.name %}{{ app.user.name }}{% else %}-{% endif %}</p>
-                                </div>
-                                <div class="d-flex border-bottom mt-3">
-                                    <strong>Surname: </strong>
-                                    <p class="ml-3">{% if app.user.surname %}{{ app.user.surname }}{% else %}-{% endif %}</p>
-                                </div>
+                            <div class="d-flex border-bottom mt-3">
+                                <strong>Name: </strong>
+                                <p class="ml-3">{% if app.user.name %}{{ app.user.name }}{% else %}-{% endif %}</p>
+                            </div>
+                            <div class="d-flex border-bottom mt-3">
+                                <strong>Surname: </strong>
+                                <p class="ml-3">{% if app.user.surname %}{{ app.user.surname }}{% else %}-{% endif %}</p>
                             </div>
                         </div>
-                        <div class="form-footer-buttons">
-                            <a href="{{ path('profile_edit') }}" class="btn btn-dark btn-sm">
-                                <i class="far fa-address-card"></i>
-                                <span>Edit Profile Info</span>
-                            </a>
-                        </div>
+                    </div>
+                    <div class="form-footer-buttons">
+                        <a href="{{ path('profile_edit') }}" class="btn btn-dark btn-sm">
+                            <i class="far fa-address-card"></i>
+                            <span>Edit Profile Info</span>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 {% endblock %}

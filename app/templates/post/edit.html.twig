@@ -3,37 +3,39 @@
 {% block title %}Edit Post{% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-lg-6">
-            {% if post.id %}
-                <h1 class="mb-3">Edit Post</h1>
-            {% else %}
-                <h1 class="mb-3">Add Post</h1>
-            {% endif %}
-            {{ form_start(form) }}
-            <div class="row mb-2 p-3">
-                {{ form_label(form.title) }}
-                {{ form_widget(form.title) }}
+    <div class="d-flex justify-content-center">
+        <div class="row">
+            <div class="col-lg-12 shadow p-3">
+                {% if post.id %}
+                    <h1 class="mb-3">Edit Post</h1>
+                {% else %}
+                    <h1 class="mb-3">Add Post</h1>
+                {% endif %}
+                {{ form_start(form) }}
+                <div class="row mb-2 p-3">
+                    {{ form_label(form.title) }}
+                    {{ form_widget(form.title) }}
+                </div>
+                <div class="row mb-2 p-3">
+                    {{ form_label(form.content) }}
+                    {{ form_widget(form.content) }}
+                </div>
+                <div class="row mb-2 p-3">
+                    {{ form_label(form.category) }}
+                    {{ form_widget(form.category) }}
+                </div>
+                <div class="row mb-2 p-3">
+                    {{ form_label(form.image) }}
+                    {{ form_widget(form.image) }}
+                </div>
+                {{ form_end(form) }}
             </div>
-            <div class="row mb-2 p-3">
-                {{ form_label(form.content) }}
-                {{ form_widget(form.content) }}
+            <div class="col-lg-6 d-flex justify-content-center align-items-center">
+                {% if post.image %}
+                    <small>Current image: </small>
+                    <img class="m-3" style="max-height: 200px" src="{{ asset('uploads/') }}{{ post.image }}"/>
+                {% endif %}
             </div>
-            <div class="row mb-2 p-3">
-                {{ form_label(form.category) }}
-                {{ form_widget(form.category) }}
-            </div>
-            <div class="row mb-2 p-3">
-                {{ form_label(form.image) }}
-                {{ form_widget(form.image) }}
-            </div>
-            {{ form_end(form) }}
-        </div>
-        <div class="col-lg-6 d-flex justify-content-center align-items-center">
-            {% if post.image %}
-                <small>Current image: </small>
-                <img class="m-3" style="max-height: 200px" src="{{ asset('uploads/') }}{{ post.image }}"/>
-            {% endif %}
         </div>
     </div>
 {% endblock %}

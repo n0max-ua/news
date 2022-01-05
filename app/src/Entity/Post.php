@@ -162,6 +162,7 @@ class Post
             $this->posted_at = new DateTimeImmutable();
         } elseif ($status == 3) {
             $this->status = self::STATUS_DELETED;
+            $this->posted_at = null;
             $this->deleted_at = new DateTimeImmutable();
         } else {
             $this->status = self::STATUS_CREATED;

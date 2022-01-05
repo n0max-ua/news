@@ -15,48 +15,50 @@
 {% endblock %}
 
 {% block body %}
-    <h1 class="mb-3">
-        {% if app.request.get('id') == created %}
-            Created
-        {% elseif app.request.get('id') == posted %}
-            Posted
-        {% elseif app.request.get('id') == deleted %}
-            Deleted
-        {% endif %}
-    </h1>
-    <a class="btn btn-primary btn-sm mb-2" href="{{ path('post_add') }}">Add new Post</a>
-    <hr>
-    <a class="btn btn-outline-primary btn-sm mb-2 {{ app.request.get('id') == created ? 'active' : '' }}"
-       href="{{ path('post_status', {'id': created}) }}">Created</a>
-    <a class="btn btn-outline-primary btn-sm mb-2 {{ app.request.get('id') == posted ? 'active' : '' }}"
-       href="{{ path('post_status', {'id': posted}) }}">Posted</a>
-    <a class="btn btn-outline-primary btn-sm mb-2 {{ app.request.get('id') == deleted ? 'active' : '' }}"
-       href="{{ path('post_status', {'id': deleted }) }}">Deleted</a>
-    {% if posts|length %}
-        {% for post in posts %}
-            <div class="border-bottom row mb-2 p-3">
-                <div class="col-md-1 d-flex justify-content-center align-items-center">{{ post.createdAt | date('H:i') }}</div>
-                <div class="col-md-11">
-                    <h4>{{ post.title }}</h4>
-                    {% if post.status == created %}
-                        <a class="btn btn-secondary btn-sm"
-                           href="{{ path('post_edit', {'id': post.id}) }}">Edit</a>
-                        <a class="btn btn-danger btn-sm"
-                           href="{{ path('post_delete', {'id': post.id}) }}">Delete</a>
-                    {% elseif post.status == deleted %}
-                        <a class="btn btn-secondary btn-sm"
-                           href="{{ path('post_edit', {'id': post.id}) }}">Edit</a>
-                    {% elseif post.status == posted %}
-                        <a class="btn btn-secondary btn-sm"
-                           href="{{ path('news_item', {'id': post.id}) }}">View</a>
-                    {% endif %}
+    <div class="shadow p-3">
+        <h1 class="mb-3">
+            {% if app.request.get('id') == created %}
+                Created
+            {% elseif app.request.get('id') == posted %}
+                Posted
+            {% elseif app.request.get('id') == deleted %}
+                Deleted
+            {% endif %}
+        </h1>
+        <a class="btn btn-primary btn-sm mb-2" href="{{ path('post_add') }}">Add new Post</a>
+        <hr>
+        <a class="btn btn-outline-primary btn-sm mb-2 {{ app.request.get('id') == created ? 'active' : '' }}"
+           href="{{ path('post_status', {'id': created}) }}">Created</a>
+        <a class="btn btn-outline-primary btn-sm mb-2 {{ app.request.get('id') == posted ? 'active' : '' }}"
+           href="{{ path('post_status', {'id': posted}) }}">Posted</a>
+        <a class="btn btn-outline-primary btn-sm mb-2 {{ app.request.get('id') == deleted ? 'active' : '' }}"
+           href="{{ path('post_status', {'id': deleted }) }}">Deleted</a>
+        {% if posts|length %}
+            {% for post in posts %}
+                <div class="row mb-3 p-3 shadow">
+                    <div class="col-md-1 d-flex justify-content-center align-items-center">{{ post.createdAt | date('H:i') }}</div>
+                    <div class="col-md-11">
+                        <h4>{{ post.title }}</h4>
+                        {% if post.status == created %}
+                            <a class="btn btn-secondary btn-sm"
+                               href="{{ path('post_edit', {'id': post.id}) }}">Edit</a>
+                            <a class="btn btn-danger btn-sm"
+                               href="{{ path('post_delete', {'id': post.id}) }}">Delete</a>
+                        {% elseif post.status == deleted %}
+                            <a class="btn btn-secondary btn-sm"
+                               href="{{ path('post_edit', {'id': post.id}) }}">Edit</a>
+                        {% elseif post.status == posted %}
+                            <a class="btn btn-secondary btn-sm"
+                               href="{{ path('news_item', {'id': post.id}) }}">View</a>
+                        {% endif %}
+                    </div>
                 </div>
+            {% endfor %}
+            <div class="d-flex justify-content-center pt-3">
+                {{ knp_pagination_render(posts) }}
             </div>
-        {% endfor %}
-        <div class="d-flex justify-content-center">
-            {{ knp_pagination_render(posts) }}
-        </div>
-    {% else %}
-        <h3>No posts for now</h3>
-    {% endif %}
+        {% else %}
+            <h3>No posts for now</h3>
+        {% endif %}
+    </div>
 {% endblock %}

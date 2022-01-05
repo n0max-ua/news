@@ -13,11 +13,16 @@ use Symfony\Component\HttpFoundation\Response;
 class MainController extends AbstractController
 {
     /**
+     * @param PostRepository $postRepository
      * @return Response
      */
-    public function index(): Response
+    public function index(PostRepository $postRepository): Response
     {
-        return $this->render('main/index.html.twig');
+        $posts = $postRepository->findBy(['status' => Post::STATUS_POSTED], ['posted_at' => 'DESC']);
+
+        return $this->render('main/index.html.twig', [
+            'post' => empty($posts) ? [] : $posts[array_rand($posts)]
+        ]);
     }
 
     /**

@@ -5,13 +5,16 @@
 {% block body %}
     <div class="row">
         <div class="col-2">
-            {{ render(controller('\\App\\Controller\\EmbedController::showCategories')) }}
+            <div class="text-center shadow p-3">
+                <h4 class="mb-3">Categories</h4>
+                {{ render(controller('\\App\\Controller\\EmbedController::showCategories')) }}
+            </div>
         </div>
-        <div class="col-10">
+        <div class="col-10 shadow p-3">
             <h1 class="mb-3">Last News</h1>
             {% if posts|length %}
                 {% for post in posts %}
-                    <div class="border-bottom border-secondary row mb-2 p-3">
+                    <div class="border-bottom border-secondary row mb-2 m-3 p-3">
                         <div class="col-md-1 d-flex justify-content-center align-items-center">{{ post.createdAt | date('H:i') }}</div>
                         <div class="col-md-11">
                             <a class="nav-link text-dark"

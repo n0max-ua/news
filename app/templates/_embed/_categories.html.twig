@@ -1,15 +1,10 @@
-<div class="text-center mt-5">
-    <h4 class="mb-3">Categories</h4>
-    {% if categories|length %}
-        <div>
-            {% for category in categories %}
-                <div class="mb-3">
-                    <a href="{{ path('news_category', {'id' : category.id}) }}">{{ category.name }}</a>
-                </div>
-                <hr>
-            {% endfor %}
+{% if categories|length %}
+    {% for category in categories %}
+        <div class="mx-3 my-3">
+            <a href="{{ path('news_category', {'id' : category.id}) }}">{{ category.name }}</a>
         </div>
-    {% else %}
-        <p>No categories for now</p>
-    {% endif %}
-</div>
+        <hr>
+    {% endfor %}
+{% else %}
+    <p>No categories for now</p>
+{% endif %}

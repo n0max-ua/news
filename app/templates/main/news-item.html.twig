@@ -5,9 +5,9 @@
 {% block body %}
     <div class="row">
         <div class="col-md-2">
-            {# side #}
+            {{ render(controller('\\App\\Controller\\EmbedController::showCategories')) }}
         </div>
-        <div class="col-md-8 py-5">
+        <div class="col-md-8 shadow p-3">
             <h2 class="mb-3">{{ post.title }}</h2>
             <p>{{ post.createdAt | date('y.m.d H:i') }} <small>by {{ post.user.email }}</small></p>
             {% if post.image %}
@@ -15,7 +15,7 @@
                     <img style="max-height: 400px" src="{{ asset('uploads/') }}{{ post.image }}"/>
                 </div>
             {% endif %}
-            <p class="fs-5 p-1 text-justify">{{ post.content }}</p>
+            <p class="fs-5 p-3 shadow text-justify">{{ post.content }}</p>
             <div class="pt-5" id="disqus_thread"></div>
             <div id="disqus_thread"></div>
             <script>

@@ -3,11 +3,37 @@
 {% block title %}Homepage{% endblock %}
 
 {% block body %}
+    <div class="row d-flex justify-content-center mb-5">
+        <div class="w-auto shadow d-flex align-items-center">
+            {{ render(controller('\\App\\Controller\\EmbedController::showCategories')) }}
+        </div>
+    </div>
     <div class="row">
-        <div class="col-4">
+        <div class="col-md-4">
             {{ render(controller('App\\Controller\\EmbedController::showLastNews')) }}
         </div>
-        <div class="col-8">
+        <div class="col-md-4">
+            {% if post %}
+                <div class="p-3 shadow">
+                    {% if post.image %}
+                        <div class="row my-3 d-flex justify-content-center">
+                            <img style="max-height: 400px" src="{{ asset('uploads/') }}{{ post.image }}"/>
+                        </div>
+                    {% endif %}
+                    <a href="{{ path('news_item', {'id' : post.id}) }}">
+                        <h4>{{ post.title }}</h4>
+                    </a>
+                </div>
+            {% endif %}
         </div>
+        <div class="col-md-4">
+            <div class="shadow d-flex flex-column align-items-center p-3">
+                <h4>Exchange Rates</h4>
+                <script type="text/javascript"
+                        src="https://w.fxexchangerate.com/converter.php?fm=USD&ft=EUR,UAH,GBP,JPY,RUB,&lg=en&am=1&ty=2">
+                </script>
+            </div>
+        </div>
+    </div>
     </div>
 {% endblock %}

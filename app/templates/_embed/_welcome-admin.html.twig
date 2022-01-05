@@ -5,11 +5,11 @@
 {% endblock %}
 
 {% block page_content %}
-        {% if inactiveUsers | length %}
-            <hr>
-            <h3>We have {{ inactiveUsers | length }} inactive {{ inactiveUsers | length > 1 ? 'Users' : 'User' }}:</h3>
-            {% for user in inactiveUsers %}
-                <p>{{ user.email }}</p>
-            {% endfor %}
-        {% endif %}
+    {% if inactiveUsers | length %}
+        <hr>
+        <h3>We have {{ inactiveUsers | length }} inactive {{ inactiveUsers | length > 1 ? 'Users' : 'User' }}:</h3>
+        {% for user in inactiveUsers %}
+            <p>{{ user.email }}</p>
+        {% endfor %}
+    {% endif %}
 {% endblock %}
