@@ -87,11 +87,12 @@ class ResetPasswordController extends AbstractController
      *
      * @param Request $request
      * @param UserPasswordHasherInterface $userPasswordHasher
-     * @param string|null $token
      * @return Response
      */
-    public function reset(Request $request, UserPasswordHasherInterface $userPasswordHasher, string $token = null): Response
+    public function reset(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
+        $token = $request->get('token');
+
         if ($token) {
             $this->storeTokenInSession($token);
 
