@@ -24,13 +24,20 @@ class PostController extends AbstractController
      */
     public function status(Request $request, PostRepository $postRepository, $id, PaginatorInterface $paginator): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if (!$user->getIsActive()){
+            throw $this->createAccessDeniedException();
+        }
+
         if (!in_array($id, Post::getStatuses())) {
             return $this->render('bundles/TwigBundle/Exception/error.html.twig');
         }
 
         $query = $postRepository->findBy([
             'status' => $id,
-            'user' => $this->getUser()
+            'user' => $user
         ]);
 
         $posts = $paginator->paginate(
@@ -53,6 +60,13 @@ class PostController extends AbstractController
      */
     public function add(Request $request, FileSaver $fileSaver, EntityManagerInterface $entityManager): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if (!$user->getIsActive()){
+            throw $this->createAccessDeniedException();
+        }
+
         $post = new Post();
 
         $form = $this->createForm(PostFormType::class, $post);
@@ -66,8 +80,6 @@ class PostController extends AbstractController
                 $post->setImage($image);
             }
 
-            /**@var User $user */
-            $user = $this->getUser();
             $post->setUser($user);
 
             $entityManager->persist($post);
@@ -93,6 +105,13 @@ class PostController extends AbstractController
      */
     public function edit(Request $request, FileSaver $fileSaver, Post $post, EntityManagerInterface $entityManager): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if (!$user->getIsActive()){
+            throw $this->createAccessDeniedException();
+        }
+
         $oldImage = $post->getImage();
         $form = $this->createForm(PostFormType::class, $post);
         $form->handleRequest($request);
@@ -109,6 +128,8 @@ class PostController extends AbstractController
             }
 
             $post->setStatus(Post::STATUS_CREATED);
+
+            $entityManager->persist($post);
             $entityManager->flush();
 
             $this->addFlash('success', 'You edit the post!');
@@ -129,10 +150,19 @@ class PostController extends AbstractController
      */
     public function delete(Post $post, EntityManagerInterface $entityManager): Response
     {
-        $post->setStatus(3);
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if (!$user->getIsActive()){
+            throw $this->createAccessDeniedException();
+        }
+
+        $post->setStatus(Post::STATUS_DELETED);
         $post->setDeletedAt(new \DateTimeImmutable());
+
+        $entityManager->persist($post);
         $entityManager->flush();
 
-        return $this->redirectToRoute('post_status', ['id' => 1]);
+        return $this->redirectToRoute('post_status', ['id' => Post::STATUS_CREATED]);
     }
 }

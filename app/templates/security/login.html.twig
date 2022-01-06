@@ -8,19 +8,18 @@
             <form method="post">
                 <h3>Please sign in</h3>
                 <label for="inputEmail" class="mb-3">Email</label>
-                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control mb-3" autocomplete="email" required autofocus>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control mb-3"
+                       autocomplete="email" required autofocus>
                 <label for="inputPassword" class="mb-3">Password</label>
-                <input type="password" name="password" id="inputPassword" class="form-control mb-3" autocomplete="current-password" required>
+                <input type="password" name="password" id="inputPassword" class="form-control mb-3"
+                       autocomplete="current-password" required>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 {#
-    Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-    See https://symfony.com/doc/current/security/remember_me.html
-
-    <div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" name="_remember_me"> Remember me
-        </label>
-    </div>
+<div class="checkbox mb-3">
+    <label>
+        <input type="checkbox" name="_remember_me"> Remember me
+    </label>
+</div>
 #}
                 <a href="{{ path('forgot_password_request') }}">
                     <small>Reset password?</small>
@@ -32,4 +31,9 @@
             </form>
         </div>
     </div>
+    {% if error|length %}
+        <div class="alert alert-warning text-center mt-5">
+            {{ error.message }}
+        </div>
+    {% endif %}
 {% endblock %}

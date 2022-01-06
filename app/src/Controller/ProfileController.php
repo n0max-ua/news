@@ -46,6 +46,7 @@ class ProfileController extends AbstractController
                 $user->setPhoto($newPhoto);
             }
 
+            $entityManager->persist($user);
             $entityManager->flush();
 
             return $this->redirectToRoute('profile_index');
