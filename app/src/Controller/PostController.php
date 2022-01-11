@@ -22,12 +22,15 @@ class PostController extends AbstractController
      * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function status(Request $request, PostRepository $postRepository, $id, PaginatorInterface $paginator): Response
-    {
+    public function status(
+        Request $request,
+        PostRepository $postRepository,
+        $id, PaginatorInterface $paginator
+    ): Response {
         /** @var User $user */
         $user = $this->getUser();
 
-        if (!$user->getIsActive()){
+        if (!$user->getIsActive()) {
             throw $this->createAccessDeniedException();
         }
 
@@ -63,7 +66,7 @@ class PostController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        if (!$user->getIsActive()){
+        if (!$user->getIsActive()) {
             throw $this->createAccessDeniedException();
         }
 
@@ -103,12 +106,16 @@ class PostController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
-    public function edit(Request $request, FileSaver $fileSaver, Post $post, EntityManagerInterface $entityManager): Response
-    {
+    public function edit(
+        Request $request,
+        FileSaver $fileSaver,
+        Post $post,
+        EntityManagerInterface $entityManager
+    ): Response {
         /** @var User $user */
         $user = $this->getUser();
 
-        if (!$user->getIsActive()){
+        if (!$user->getIsActive()) {
             throw $this->createAccessDeniedException();
         }
 
@@ -153,7 +160,7 @@ class PostController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        if (!$user->getIsActive()){
+        if (!$user->getIsActive()) {
             throw $this->createAccessDeniedException();
         }
 

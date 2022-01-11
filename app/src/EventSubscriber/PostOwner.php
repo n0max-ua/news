@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Security;
 class PostOwner implements EventSubscriberInterface
 {
     /**
-     * @var Security
+     * @var Security $security
      */
     private Security $security;
 
@@ -40,7 +40,7 @@ class PostOwner implements EventSubscriberInterface
     {
         $entity = $event->getEntityInstance();
 
-        if ($entity instanceof Post){
+        if ($entity instanceof Post) {
             /** @var User $user */
             $user = $this->security->getUser();
 

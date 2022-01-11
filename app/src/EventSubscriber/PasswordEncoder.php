@@ -10,7 +10,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class PasswordEncoder implements EventSubscriberInterface
 {
     /**
-     * @var UserPasswordHasherInterface
+     * @var UserPasswordHasherInterface $userPasswordHasher
      */
     private UserPasswordHasherInterface $userPasswordHasher;
 

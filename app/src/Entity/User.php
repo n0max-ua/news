@@ -36,7 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="json")
      */
-    private  $roles = [];
+    private $roles = [];
 
     /**
      * @var string The hashed password
@@ -121,7 +121,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -129,7 +129,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -355,7 +355,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public static function getPossibleRoles(): array
     {
-        return[
+        return [
             self::ROLE_USER => 'ROLE_USER',
             self::ROLE_ADMIN => 'ROLE_ADMIN'
         ];

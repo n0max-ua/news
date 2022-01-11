@@ -38,8 +38,10 @@ class ResetPasswordController extends AbstractController
      * @param ResetPasswordHelperInterface $resetPasswordHelper
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(ResetPasswordHelperInterface $resetPasswordHelper, EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        ResetPasswordHelperInterface $resetPasswordHelper,
+        EntityManagerInterface $entityManager
+    ) {
         $this->resetPasswordHelper = $resetPasswordHelper;
         $this->entityManager = $entityManager;
     }

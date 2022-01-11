@@ -46,7 +46,7 @@ class PostCrudController extends AbstractCrudController
             ImageField::new('image')
                 ->setBasePath('/uploads')
                 ->setUploadDir('public/uploads'),
-            NumberField::new('status')->formatValue(function ($value) {
+            NumberField::new('status')->formatValue(function($value) {
                 switch ($value) {
                     case 2 :
                         return 'Posted';
@@ -73,7 +73,8 @@ class PostCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         return $actions
-            ->remove(Crud::PAGE_INDEX, Action::DELETE);
+            ->remove(Crud::PAGE_INDEX, Action::DELETE)
+            ->remove(Crud::PAGE_DETAIL, Action::DELETE);
     }
 
     /**

@@ -39,12 +39,11 @@ class RegistrationController extends AbstractController
      * @throws TransportExceptionInterface
      */
     public function register(
-        Request                     $request,
+        Request $request,
         UserPasswordHasherInterface $userPasswordHasher,
-        EntityManagerInterface      $entityManager
-    ): Response
-    {
-        if ($this->getUser()){
+        EntityManagerInterface $entityManager
+    ): Response {
+        if ($this->getUser()) {
             return $this->redirectToRoute('homepage');
         }
 

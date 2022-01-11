@@ -20,6 +20,7 @@ class AddUserCommand extends Command
      * @var string
      */
     protected static $defaultName = 'app:add-user';
+
     /**
      * @var string
      */
@@ -46,11 +47,12 @@ class AddUserCommand extends Command
      * @param UserPasswordHasherInterface $userPasswordHasher
      * @param ManagerRegistry $managerRegistry
      */
-    public function __construct(string                      $name = null,
-                                UserRepository              $userRepository,
-                                UserPasswordHasherInterface $userPasswordHasher,
-                                ManagerRegistry             $managerRegistry)
-    {
+    public function __construct(
+        string $name = null,
+        UserRepository $userRepository,
+        UserPasswordHasherInterface $userPasswordHasher,
+        ManagerRegistry $managerRegistry
+    ) {
         parent::__construct($name);
         $this->userRepository = $userRepository;
         $this->userPasswordHasher = $userPasswordHasher;

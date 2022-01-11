@@ -68,8 +68,12 @@ class MainController extends AbstractController
      * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function category(Request $request, Category $category, PostRepository $postRepository, PaginatorInterface $paginator): Response
-    {
+    public function category(
+        Request $request,
+        Category $category,
+        PostRepository $postRepository,
+        PaginatorInterface $paginator
+    ): Response {
         $query = $postRepository->findBy([
             'category' => $category->getId(),
             'status' => Post::STATUS_POSTED

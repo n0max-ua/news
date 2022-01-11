@@ -16,7 +16,11 @@ class EmbedController extends AbstractController
      */
     public function showLastNews(PostRepository $postRepository): Response
     {
-        $posts = $postRepository->findBy(['status' => Post::STATUS_POSTED], ['id' => 'DESC'], 5);
+        $posts = $postRepository->findBy(
+            ['status' => Post::STATUS_POSTED],
+            ['id' => 'DESC'],
+            5
+        );
 
         return $this->render('_embed/_last-news.html.twig', [
             'posts' => $posts

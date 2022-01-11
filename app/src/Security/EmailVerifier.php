@@ -17,10 +17,12 @@ class EmailVerifier
      * @var VerifyEmailHelperInterface
      */
     private VerifyEmailHelperInterface $verifyEmailHelper;
+
     /**
      * @var MailerInterface
      */
     private MailerInterface $mailer;
+
     /**
      * @var EntityManagerInterface
      */

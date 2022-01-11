@@ -7,10 +7,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Security;
 
-class ActivityListener implements EventSubscriberInterface{
+class ActivityListener implements EventSubscriberInterface
+{
 
     /**
-     * @var Security
+     * @var Security $security
      */
     private Security $security;
 
@@ -36,7 +37,7 @@ class ActivityListener implements EventSubscriberInterface{
     {
         $user = $this->security->getUser();
 
-        if ($user){
+        if ($user) {
             /** @var User $user */
             $user->setLastActivity(new \DateTimeImmutable());
         }
