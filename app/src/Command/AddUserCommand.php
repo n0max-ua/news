@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
@@ -37,26 +37,26 @@ class AddUserCommand extends Command
     private UserPasswordHasherInterface $userPasswordHasher;
 
     /**
-     * @var ManagerRegistry
+     * @var EntityManagerInterface $entityManager
      */
-    private ManagerRegistry $managerRegistry;
+    private EntityManagerInterface $entityManager;
 
     /**
      * @param string|null $name
      * @param UserRepository $userRepository
      * @param UserPasswordHasherInterface $userPasswordHasher
-     * @param ManagerRegistry $managerRegistry
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         string $name = null,
         UserRepository $userRepository,
         UserPasswordHasherInterface $userPasswordHasher,
-        ManagerRegistry $managerRegistry
+        EntityManagerInterface $entityManager
     ) {
         parent::__construct($name);
         $this->userRepository = $userRepository;
         $this->userPasswordHasher = $userPasswordHasher;
-        $this->managerRegistry = $managerRegistry;
+        $this->entityManager = $entityManager;
     }
 
     protected function configure(): void
@@ -64,7 +64,13 @@ class AddUserCommand extends Command
         $this
             ->addOption('email', 'em', InputArgument::REQUIRED, 'Email')
             ->addOption('password', 'p', InputArgument::REQUIRED, 'Password')
-            ->addOption('isAdmin', '', InputArgument::OPTIONAL, 'Set if user is admin', 0);
+            ->addOption(
+                'isAdmin',
+                '',
+                InputArgument::OPTIONAL,
+                'Set if user is admin',
+                0
+            );
     }
 
     /**
@@ -106,7 +112,11 @@ class AddUserCommand extends Command
             return Command::FAILURE;
         }
 
-        $successMessage = sprintf('%s was created as %s', $user->getEmail(), $isAdmin ? 'Admin' : 'User');
+        $successMessage = sprintf(
+            '%s was created as %s',
+            $user->getEmail(),
+            $isAdmin ? 'Admin' : 'User'
+        );
         $io->success($successMessage);
 
         return Command::SUCCESS;
@@ -136,8 +146,8 @@ class AddUserCommand extends Command
         $user->setIsActive($isAdmin);
         $user->setIsVerified(true);
 
-        $this->managerRegistry->getManager()->persist($user);
-        $this->managerRegistry->getManager()->flush();
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
 
         return $user;
     }

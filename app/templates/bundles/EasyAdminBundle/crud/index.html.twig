@@ -50,12 +50,10 @@
     {% endblock %}
 {% endblock page_actions %}
 {% block main %}
-    {# sort can be multiple; let's consider the sorting field the first one #}
     {% set sort_field_name = app.request.get('sort')|keys|first %}
     {% set sort_order = app.request.get('sort')|first %}
     {% set some_results_are_hidden = false %}
     {% set has_footer = entities|length != 0 %}
-    {% set has_search = ea.crud.isSearchEnabled %}
     {% set has_filters = filters|length > 0 %}
     {% set num_results = entities|length %}
     <table class="table datagrid {{ entities is empty ? 'datagrid-empty' }}">
@@ -74,10 +72,17 @@
                     {% set ea_sort_desc = constant('EasyCorp\\Bundle\\EasyAdminBundle\\Config\\Option\\SortOrder::DESC') %}
                     {% for field in entities|first.fields ?? [] %}
                         {% set is_sorting_field = ea.search.isSortingField(field.property) %}
-                        {% set next_sort_direction = is_sorting_field ? (ea.search.sortDirection(field.property) == ea_sort_desc ? ea_sort_asc : ea_sort_desc) : ea_sort_desc %}
-                        {% set column_icon = is_sorting_field ? (next_sort_direction == ea_sort_desc ? 'fa-arrow-up' : 'fa-arrow-down') : 'fa-sort' %}
-                        <th class="{{ is_sorting_field ? 'sorted' }} {{ field.isVirtual ? 'field-virtual' }} header-for-{{ field.cssClass|split(' ')|filter(class => class starts with 'field-')|join('') }} text-{{ field.textAlign }}"
-                            dir="{{ ea.i18n.textDirection }}">
+                        {% set next_sort_direction = is_sorting_field
+                            ? (ea.search.sortDirection(field.property) == ea_sort_desc
+                            ? ea_sort_asc : ea_sort_desc)
+                            : ea_sort_desc %}
+                        {% set column_icon = is_sorting_field
+                            ? (next_sort_direction == ea_sort_desc
+                            ? 'fa-arrow-up' : 'fa-arrow-down')
+                            : 'fa-sort' %}
+                        <th class="{{ is_sorting_field ? 'sorted' }} {{ field.isVirtual ? 'field-virtual' }}
+                        header-for-{{ field.cssClass|split(' ')|filter(class => class starts with 'field-')|join('') }}
+                        text-{{ field.textAlign }}" dir="{{ ea.i18n.textDirection }}">
                             {% if field.isSortable %}
                                 <a href="{{ ea_url({ page: 1, sort: { (field.property): next_sort_direction } }).includeReferrer() }}">
                                     {{ field.label|raw }} <i class="fa fa-fw {{ column_icon }}"></i>
@@ -112,8 +117,8 @@
                         {% endif %}
                         {% for field in entity.fields %}
                             <td data-label="{{ field.label|e('html_attr') }}"
-                                class="{{ field.property == sort_field_name ? 'sorted' }} text-{{ field.textAlign }} {{ field.cssClass }}"
-                                dir="{{ ea.i18n.textDirection }}">
+                                class="{{ field.property == sort_field_name ? 'sorted' }}
+                                text-{{ field.textAlign }} {{ field.cssClass }}" dir="{{ ea.i18n.textDirection }}">
                                 {{ include(field.templatePath, { field: field, entity: entity }, with_context = false) }}
                             </td>
                         {% endfor %}
@@ -122,11 +127,18 @@
                                 {% if entity.actions.count > 0 %}
                                     {% if ea.crud.showEntityActionsAsDropdown %}
                                         {% for action in entity.actions %}
-                                            {{ include(action.templatePath, { action: action, isIncludedInDropdown: ea.crud.showEntityActionsAsDropdown }, with_context = false) }}
+                                            {{ include(action.templatePath, {
+                                                action: action,
+                                                isIncludedInDropdown: ea.crud.showEntityActionsAsDropdown
+                                            }, with_context = false) }}
                                         {% endfor %}
                                     {% else %}
                                         {% for action in entity.actions %}
-                                            {{ include(action.templatePath, { action: action, entity: entity, isIncludedInDropdown: ea.crud.showEntityActionsAsDropdown }, with_context = false) }}
+                                            {{ include(action.templatePath, {
+                                                action: action,
+                                                entity: entity, isIncludedInDropdown:
+                                                ea.crud.showEntityActionsAsDropdown
+                                            }, with_context = false) }}
                                         {% endfor %}
                                     {% endif %}
                                 {% endif %}
